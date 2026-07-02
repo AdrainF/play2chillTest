@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/17.14.1/build/net8.0" vcs="Perforce" />
+    <mapping directory="$USER_HOME$/.nuget/packages/mstest.testadapter/3.6.4/build/_localization/pl" vcs="Perforce" />
+    <mapping directory="$USER_HOME$/.nuget/packages/selenium.webdriver/4.29.0/manager/linux" vcs="Perforce" />
+    <mapping directory="$USER_HOME$/.nuget/packages/selenium.webdriver/4.29.0/manager/macos" vcs="Perforce" />
+    <mapping directory="$USER_HOME$/.nuget/packages/selenium.webdriver/4.29.0/manager/windows" vcs="Perforce" />
+  </component>
+</project>
