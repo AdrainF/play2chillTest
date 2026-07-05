@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "P2C_CharacterBase.generated.h"
 
+class UP2C_AttributionComponent;
+
 UCLASS()
 class PLAY2CHILL_ARENA_API AP2C_CharacterBase : public ACharacter
 {
@@ -15,7 +17,10 @@ public:
 	// Sets default values for this character's properties
 	AP2C_CharacterBase();
 
+	UPROPERTY(Blueprintable, EditAnywhere, Category = "Components")
+	UP2C_AttributionComponent* AttributionComp;
 protected:
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

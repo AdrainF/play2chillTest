@@ -3,11 +3,16 @@
 
 #include "Characters/P2C_CharacterBase.h"
 
+#include "Components/P2C_AttributionComponent.h"
+
+
 // Sets default values
 AP2C_CharacterBase::AP2C_CharacterBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	AttributionComp=CreateDefaultSubobject<UP2C_AttributionComponent>(TEXT("AttributionComp"));
 
 }
 
