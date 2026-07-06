@@ -8,6 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnHealthChanged, UP2C_AttributionComponent*, AttributionComp, float, Health, float, MaxHealth, float, HealthDelta, AActor*, InstigatorActor, AActor*, DamageActor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnStaminaChanged, UP2C_AttributionComponent*, AttributionComp, float, Stamina, float, MaxStamina, float, StaminaDelta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKillCountChanged, int32, NewKillCount);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PLAY2CHILL_ARENA_API UP2C_AttributionComponent : public UActorComponent
@@ -31,14 +32,18 @@ protected:
 	float Stamina=0.0f;
 	UPROPERTY(EditAnywhere, Replicated, Category = "Attributes")
 	float MaxStamina=100.0f;
+	UPROPERTY(EditAnywhere, Replicated, Category = "Attributes")
+	int32 KillCount=0;
 
 	UPROPERTY(Replicated)
 	AActor* LastInstigator;
 	// Replication
 	UFUNCTION()
-	void OnRep_Health(float OldHealth);
+	void OnRep_Health(const float OldHealth) ;
 	UFUNCTION()
-	void OnRep_Stamina(float OldStamina);
+	void OnRep_Stamina(const float OldStamina) ;
+	UFUNCTION()
+	void OnRep_KillCount(const int32 OldKillCount) const;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	void ApplyHealthChange(float Value, AActor* InstigatorActor = nullptr, AActor* DamageActor = nullptr);
@@ -51,6 +56,8 @@ public:
 	FOnHealthChanged OnHealthChanged;
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnStaminaChanged OnStaminaChanged;
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnKillCountChanged OnKillCountChanged;
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool IsAlive() const { return Health > 0.0f; }
@@ -63,6 +70,8 @@ public:
 	float GetMaxHealth() const { return MaxHealth; }
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetMaxStamina() const {return MaxStamina; }
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	int32 GetKillCount() const { return KillCount; }
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	// Called every frame

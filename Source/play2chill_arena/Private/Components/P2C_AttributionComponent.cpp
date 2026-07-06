@@ -27,28 +27,34 @@ void UP2C_AttributionComponent::BeginPlay()
 }
 
 
-void UP2C_AttributionComponent::OnRep_Health(float OldHealth)
+void UP2C_AttributionComponent::OnRep_Health(const float OldHealth) 
 {
 	float Delta = Health - OldHealth;
 	OnHealthChanged.Broadcast(this, Health, MaxHealth, Delta, LastInstigator, GetOwner());
 }
 
-void UP2C_AttributionComponent::OnRep_Stamina(float OldStamina)
+void UP2C_AttributionComponent::OnRep_Stamina(const float OldStamina) 
 {
 	float Delta = Stamina - OldStamina;
 	OnStaminaChanged.Broadcast(this, Stamina, MaxStamina, Delta);
 }
 
+void UP2C_AttributionComponent::OnRep_KillCount( const int32 OldKillCount) const
+{
+	OnKillCountChanged.Broadcast(KillCount);
+}
+
 void UP2C_AttributionComponent::ApplyHealthChange(float Value, AActor* InstigatorActor, AActor* DamageActor)
 {
-	if (Value == 0.0f || !IsAlive()) return;
+	if (Value == 0.0f || !IsAlive())return;
+	
 
 	float OldHealth = Health;
 	LastInstigator = InstigatorActor;
 
 	Health = FMath::Clamp(Health + Value, 0.0f, MaxHealth);
 	
-	OnHealthChanged.Broadcast(this,Health, MaxHealth, Value, LastInstigator, DamageActor);
+	OnHealthChanged.Broadcast(this,OldHealth, MaxHealth, Health, LastInstigator, DamageActor);
 }
 
 void UP2C_AttributionComponent::ApplyStaminaChange(float Value)
