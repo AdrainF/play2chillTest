@@ -28,11 +28,21 @@
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Characters/P2C_PlayerCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Components/P2C_AttributionComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Core/P2C_ArenaGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Input/P2C_EnhancedInputComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Input/P2C_InputConfig.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/System/P2C_AssetManager.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/System/P2C_GameplayTags.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Characters/P2C_CharacterBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Characters/P2C_PlayerCharacter.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Components/P2C_AttributionComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Core/P2C_ArenaGameInstance.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Input/P2C_EnhancedInputComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Input/P2C_InputConfig.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/System/P2C_AssetManager.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/System/P2C_GameplayTags.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Plugins/AI/MLAdapter/Source/MLAdapter/Private/Actuators/MLAdapterActuator_Camera.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Private/UObject/Class.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -163,7 +173,10 @@
       <workItem from="1782999005329" duration="15155000" />
       <workItem from="1783079003389" duration="5000" />
       <workItem from="1783082054220" duration="1915000" />
-      <workItem from="1783154660909" duration="5645000" />
+      <workItem from="1783154660909" duration="9145000" />
+      <workItem from="1783278910304" duration="370000" />
+      <workItem from="1783322119148" duration="1190000" />
+      <workItem from="1783326354932" duration="5406000" />
     </task>
     <servers />
   </component>

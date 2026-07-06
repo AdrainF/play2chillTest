@@ -8,6 +8,8 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UP2C_InputConfig;
+struct FInputActionValue;
 /**
  * 
  */
@@ -23,5 +25,27 @@ public:
 	USpringArmComponent* CameraBoom;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Camera")
 	UCameraComponent* FollowCamera;
+
+	/** The input config that maps Input Actions to Input Tags*/
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UP2C_InputConfig* InputConfig;
+ 
+	/** Handles moving forward/backward */
+	void Input_Move(const FInputActionValue& InputActionValue);
+ 
+	/** Handles mouse look */
+	void Input_Look(const FInputActionValue& InputActionValue);
+ 
+	/** Handles Jumping */
+	void Input_Jump(const FInputActionValue& InputActionValue);
+ 
+	/** Handles Melee Attack */
+	void Input_AttackMelee(const FInputActionValue& InputActionValue);
+
+	/** Handles Ranged Attack */
+	void Input_AttackRanged(const FInputActionValue& InputActionValue);
+
+protected:
 	
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 };
