@@ -9,7 +9,7 @@
 class UP2C_AttributionComponent;
 class UWidgetComponent;
 
-UCLASS()
+UCLASS(Abstract)
 class PLAY2CHILL_ARENA_API AP2C_CharacterBase : public ACharacter
 {
 	GENERATED_BODY()
@@ -23,7 +23,7 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UWidgetComponent> OverheadHealthWidget;
-
+	// Function to update the overhead health widget based on health changes
 	UFUNCTION()
 	void UpdateOverheadHealth(UP2C_AttributionComponent* AttributionComponent, float OldValue, float  MaxValue , float NewValue , AActor* InstigatorActor, AActor* DamagedActor);
 	// Called when the game starts or when spawned

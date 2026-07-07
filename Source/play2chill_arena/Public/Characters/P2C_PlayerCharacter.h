@@ -10,6 +10,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UP2C_InputConfig;
 struct FInputActionValue;
+class UP2C_AbilitySystemComponent;
 /**
  * 
  */
@@ -22,13 +23,15 @@ public:
 	AP2C_PlayerCharacter();
 
 	UPROPERTY(Blueprintable, EditAnywhere, Category = "Camera")
-	USpringArmComponent* CameraBoom;
+	TObjectPtr<USpringArmComponent>  CameraBoom;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Camera")
-	UCameraComponent* FollowCamera;
+	TObjectPtr<UCameraComponent> FollowCamera;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
+	TObjectPtr<UP2C_AbilitySystemComponent> AbilitySystemComp;
 
 	/** The input config that maps Input Actions to Input Tags*/
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	UP2C_InputConfig* InputConfig;
+	TObjectPtr<UP2C_InputConfig> InputConfig;
  
 	/** Handles moving forward/backward */
 	void Input_Move(const FInputActionValue& InputActionValue);

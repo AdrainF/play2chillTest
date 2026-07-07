@@ -24,7 +24,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://18" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://6" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Characters/P2C_CharacterBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Characters/P2C_PlayerCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Characters/P2C_PlayerController.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -32,6 +32,8 @@
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Core/P2C_ArenaGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Input/P2C_EnhancedInputComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Input/P2C_InputConfig.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/System/AbilitySystem/Abilities/Data/P2C_AbilityDataAsset.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/System/AbilitySystem/Abilities/P2C_AbilityBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/System/P2C_AssetManager.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/System/P2C_GameplayTags.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/UI/P2C_OverheadHealthWidget.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -43,6 +45,8 @@
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Core/P2C_ArenaGameInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Input/P2C_EnhancedInputComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Input/P2C_InputConfig.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/System/AbilitySystem/Abilities/Data/P2C_AbilityDataAsset.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/System/AbilitySystem/Abilities/P2C_AbilityBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/System/P2C_AssetManager.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/System/P2C_GameplayTags.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/UI/P2C_OverheadHealthWidget.h" root0="FORCE_HIGHLIGHTING" />
@@ -50,6 +54,7 @@
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Plugins/AI/MLAdapter/Source/MLAdapter/Private/Actuators/MLAdapterActuator_Camera.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Core/Public/Logging/LogMacros.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Private/UObject/Class.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectPtr.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/UnrealEngine.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -64,7 +69,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "C/C++ Project.play2chill_arena.executor": "Debug",
+    "C/C++ Project.play2chill_arena.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -185,7 +190,8 @@
       <workItem from="1783154660909" duration="9145000" />
       <workItem from="1783278910304" duration="370000" />
       <workItem from="1783322119148" duration="1190000" />
-      <workItem from="1783326354932" duration="16932000" />
+      <workItem from="1783326354932" duration="20902000" />
+      <workItem from="1783444611088" duration="9637000" />
     </task>
     <servers />
   </component>
@@ -212,11 +218,6 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Source/play2chill_arena/Private/UI/P2C_PlayerWidget.cpp</url>
-          <line>10</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

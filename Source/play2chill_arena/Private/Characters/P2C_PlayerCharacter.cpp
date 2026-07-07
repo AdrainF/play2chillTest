@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Input/P2C_EnhancedInputComponent.h"
 #include "System/P2C_GameplayTags.h"
+#include "System/AbilitySystem/P2C_AbilitySystemComponent.h"
 
 AP2C_PlayerCharacter::AP2C_PlayerCharacter()
 {
@@ -14,7 +15,7 @@ AP2C_PlayerCharacter::AP2C_PlayerCharacter()
 	FollowCamera= CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom);
 
-
+	AbilitySystemComp=CreateDefaultSubobject<UP2C_AbilitySystemComponent>(TEXT("AbilitySystemComp"));
 }
 
 void AP2C_PlayerCharacter::Input_Move(const FInputActionValue& InputActionValue)

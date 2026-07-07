@@ -23,6 +23,7 @@ AP2C_CharacterBase::AP2C_CharacterBase()
 	OverheadHealthWidget->SetDrawAtDesiredSize(true);
 	OverheadHealthWidget->SetVisibility(false);
 
+	
 }
 
 void AP2C_CharacterBase::UpdateOverheadHealth(UP2C_AttributionComponent* AttributionComponent, float OldValue,
