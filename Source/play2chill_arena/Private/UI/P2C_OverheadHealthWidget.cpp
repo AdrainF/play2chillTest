@@ -8,4 +8,5 @@
 void UP2C_OverheadHealthWidget::SetHealthPercent(float Percent)
 {
 	HealthBar->SetPercent(Percent);
+	
 }

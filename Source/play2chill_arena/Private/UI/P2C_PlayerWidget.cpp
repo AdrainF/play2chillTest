@@ -6,9 +6,9 @@
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 
-void UP2C_PlayerWidget::UpdateHealth(UP2C_AttributionComponent* AttributionComponent, float OldValue, float  MaxValue , float NewValue , AActor* InstigatorActor, AActor* DamagedActor)
+void UP2C_PlayerWidget::UpdateHealth(UP2C_AttributionComponent* AttributionComponent, float Health, float  MaxValue , float Delta , AActor* InstigatorActor, AActor* DamagedActor)
 {
-		HealthBar->SetPercent(NewValue / MaxValue);
+		HealthBar->SetPercent(Health / MaxValue);
 }
 
 void UP2C_PlayerWidget::UpdateStamina(UP2C_AttributionComponent* AttributionComponent, float OldValue, float MaxValue, float NewValue)

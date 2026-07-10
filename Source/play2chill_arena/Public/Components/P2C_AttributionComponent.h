@@ -19,6 +19,13 @@ public:
 	// Sets default values for this component's properties
 	UP2C_AttributionComponent();
 
+	/** Server function to apply health change, ensuring that the change is validated and replicated across the network
+	 * @param Value - The amount of health to change (positive for healing, negative for damage)
+	 * @param InstigatorActor - The actor that caused the health change (e.g., attacker)
+	 * @param DamageActor - The actor that received the damage (this character)
+	 */
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "P2C|Network")
+	void Server_ApplyHealthChange(float Value, AActor* InstigatorActor = nullptr, AActor* DamageActor = nullptr);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -44,24 +51,29 @@ protected:
 	void OnRep_Stamina(const float OldStamina) ;
 	UFUNCTION()
 	void OnRep_KillCount(const int32 OldKillCount) const;
-
+	
+	/** Attribute change functions
+	 * @param Value - The amount to change the attribute by (positive or negative)
+	 * @param InstigatorActor - The actor that caused the change (e.g., attacker
+	 * @param DamageActor - The actor that received the damage (this character)
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	void ApplyHealthChange(float Value, AActor* InstigatorActor = nullptr, AActor* DamageActor = nullptr);
+	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	void ApplyStaminaChange(float Value);
 	
 public:
-	
+	// Delegates for attribute changes
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnHealthChanged OnHealthChanged;
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnStaminaChanged OnStaminaChanged;
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnKillCountChanged OnKillCountChanged;
-	
+	// Attribute accessors
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool IsAlive() const { return Health > 0.0f; }
- 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetHealth() const { return Health; }
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
@@ -73,6 +85,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	int32 GetKillCount() const { return KillCount; }
 
+	// Replication
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

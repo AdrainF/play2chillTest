@@ -16,6 +16,7 @@ class PLAY2CHILL_ARENA_API UP2C_EnhancedInputComponent : public UEnhancedInputCo
 	GENERATED_BODY()
 	
 public:
+	// Binds an input action to a function based on the input tag defined in the input config
 	template<class UserClass, typename FuncType>
 	void BindActionByTag(const UP2C_InputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func);
 };

@@ -1,0 +1,71 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "Components/P2C_InteractionComponent.h"
+
+#include "GameFramework/Character.h"
+#include "Interfaces/P2C_InteractionInterface.h"
+
+// Sets default values for this component's properties
+UP2C_InteractionComponent::UP2C_InteractionComponent()
+{
+	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+	// off to improve performance if you don't need them.
+	PrimaryComponentTick.bCanEverTick = true;
+
+	// ...
+}
+
+
+// Called when the game starts
+void UP2C_InteractionComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// ...
+	
+}
+
+void UP2C_InteractionComponent::PrimaryInteract()
+{
+	TArray<struct FHitResult> OutHits;
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	FCollisionShape CollisionShape;
+	float Radius = SphereRadius;
+	CollisionShape.SetSphere(Radius);
+	FCollisionQueryParams Params;
+	ACharacter* MyCharacter = Cast<ACharacter>(GetOwner());
+	FVector Start = MyCharacter->GetPawnViewLocation();
+	FVector End = MyCharacter->GetPawnViewLocation() + (MyCharacter->GetControlRotation().Vector() * InteractionDistance);
+	Params.AddIgnoredActor(MyCharacter);
+
+	bool bBlockHit = GetWorld()->SweepMultiByObjectType(OutHits, Start, End, FQuat::Identity, ObjectQueryParams, CollisionShape, Params);
+
+	FColor LineColor = bBlockHit ? FColor::Green : FColor::Red;
+
+	for (FHitResult Hit : OutHits)
+	{
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor->Implements<UP2C_InteractionInterface>())
+		{
+			APawn* MyPawn = Cast<APawn>(MyCharacter);
+			IP2C_InteractionInterface::Execute_Interact(HitActor, MyPawn);
+
+			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
+			break;
+		}
+
+	}
+	DrawDebugLine(GetWorld(), Start, End, LineColor, false, 2.0f, 0, 2.0f);
+}
+
+
+// Called every frame
+void UP2C_InteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	// ...
+}
+

@@ -18,7 +18,7 @@ class PLAY2CHILL_ARENA_API UP2C_PlayerWidget : public UUserWidget
 public:
 	// Add functions to update the player's health, stamina, and kill count
 	UFUNCTION(BlueprintCallable)
-	void UpdateHealth(UP2C_AttributionComponent* AttributionComponent, float OldValue, float NewValue, float MaxValue, AActor* InstigatorActor, AActor* DamagedActor);
+	void UpdateHealth(UP2C_AttributionComponent* AttributionComponent, float Health, float MaxValue, float Delta, AActor* InstigatorActor, AActor* DamagedActor);
 	UFUNCTION(BlueprintCallable)
 	void UpdateStamina(UP2C_AttributionComponent* AttributionComponent, float OldValue, float NewValue, float MaxValue);
 	UFUNCTION(BlueprintCallable)
