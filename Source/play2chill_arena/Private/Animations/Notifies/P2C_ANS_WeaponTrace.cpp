@@ -9,13 +9,20 @@
 void UP2C_ANS_WeaponTrace::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
                                        float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
-	if (AP2C_PlayerCharacter* Char = Cast<AP2C_PlayerCharacter>(MeshComp->GetOwner()))
+	AActor* Owner = MeshComp->GetOwner();
+	if (Owner && Owner->HasAuthority())
 	{
-		if (Char->EquippedWeapon)
+		if (AP2C_PlayerCharacter* Char = Cast<AP2C_PlayerCharacter>(MeshComp->GetOwner()))
 		{
-			Char->EquippedWeapon->StartTrace();
-		}
 			
+			if (Char->EquippedWeapon)
+			{
+				
+				Char->EquippedWeapon->StartTrace();
+				
+			}
+			
+		}
 	}
 	
 }
@@ -23,11 +30,17 @@ void UP2C_ANS_WeaponTrace::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSe
 void UP2C_ANS_WeaponTrace::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
 	const FAnimNotifyEventReference& EventReference)
 {
-	if (AP2C_PlayerCharacter* Char = Cast<AP2C_PlayerCharacter>(MeshComp->GetOwner()))
+	AActor* Owner = MeshComp->GetOwner();
+	
+	if (Owner && Owner->HasAuthority())
 	{
-		if (Char->EquippedWeapon)
+		if (AP2C_PlayerCharacter* Char = Cast<AP2C_PlayerCharacter>(MeshComp->GetOwner()))
 		{
-			Char->EquippedWeapon->EndTrace();
+		
+			if (Char->EquippedWeapon)
+			{
+				Char->EquippedWeapon->EndTrace();
+			}
 		}
 	}
 }

@@ -24,10 +24,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "WeaponCollison")
 	void StartTrace();
 	UFUNCTION(BlueprintCallable, Category = "WeaponCollison")
-	void EndTrace() { bIsTracing = false; };
+	void EndTrace();
 	UFUNCTION(BlueprintCallable, Category = "WeaponCollison")
 	void DoFrameToFrameTrace();
-
+	
 protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName SocketBaseName = "Socket_Base";
@@ -36,12 +36,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float ProjectileRadius = 30.0f;
 	bool bIsTracing = false;
-
-	FVector LastBaseLocation;
-	FVector LastTipLocation;
-
+	
+	uint64 LastStartFrame = 0;
+	uint64 LastEndFrame = 0;
+	
 	UPROPERTY()
-	TArray<AActor*> HitActors;
-
+	TSet<AActor*> HitActors;
 	virtual void Tick(float DeltaTime) override;
 };

@@ -3,12 +3,16 @@
 
 #include "Items/Weapons/P2C_WeaponBase.h"
 
+#include "Characters/P2C_PlayerCharacter.h"
+#include "Components/P2C_AttributionComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
 AP2C_WeaponBase::AP2C_WeaponBase()
 {
+	
+	PrimaryActorTick.bStartWithTickEnabled = false;
 	
 	WeaponMesh=CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	WeaponMesh->SetupAttachment(CollisionComp);
@@ -19,16 +23,37 @@ AP2C_WeaponBase::AP2C_WeaponBase()
 
 void AP2C_WeaponBase::StartTrace()
 {
-	PrimaryActorTick.bCanEverTick=true;
+	if (!HasAuthority()) return;
 	bIsTracing = true;
-	HitActors.Empty();
+	if (GFrameCounter == LastStartFrame) return;
+	LastStartFrame = GFrameCounter;
 	
+	HitActors.Empty();
+	SetActorTickEnabled(true);
+	
+	WeaponMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+	if (AP2C_PlayerCharacter* OwnerChar = Cast<AP2C_PlayerCharacter>(GetOwner()))
+	{
+		if (USkeletalMeshComponent* CharMesh = OwnerChar->GetMesh())
+		{
+			CharMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+		}
+	}
+}
+
+void AP2C_WeaponBase::EndTrace()
+{
+	if (!HasAuthority()) return;
+	SetActorTickEnabled(false);
+	bIsTracing=false;
+	if (GFrameCounter == LastStartFrame) return;
+	LastStartFrame = GFrameCounter;
 }
 
 void AP2C_WeaponBase::DoFrameToFrameTrace()
 {
 	if (!HasAuthority()) return;
- 
+	
 	FVector CurrentBase = WeaponMesh->GetSocketLocation(SocketBaseName);
 	FVector CurrentTip = WeaponMesh->GetSocketLocation(SocketTipName);
  
@@ -54,16 +79,23 @@ void AP2C_WeaponBase::DoFrameToFrameTrace()
  
 	if (bHit)
 	{
+		
 		for (const FHitResult& Hit : OutHits)
 		{
 			AActor* Victim = Hit.GetActor();
 			if (Victim && !HitActors.Contains(Victim))
 			{
-				HitActors.Add(Victim);
 				
+				if (UP2C_AttributionComponent* AttriComp = Victim->GetComponentByClass<UP2C_AttributionComponent>())
+				{
+					HitActors.Add(Victim);
+					AttriComp->Server_ApplyHealthChange(-10, GetOwner(), Victim);
+					UE_LOG(LogTemp, Warning, TEXT("UniqueHitActor name: %s"), *Victim->GetName());
+				}
 				UE_LOG(LogTemp, Warning, TEXT("Sweep Hit: %s"), *Victim->GetName());
 			}
 		}
+		
 	}
 	
 }
