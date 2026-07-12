@@ -30,11 +30,10 @@ AP2C_ProjectileBase::AP2C_ProjectileBase()
 	EffectComp=CreateDefaultSubobject<UParticleSystemComponent>(TEXT("EffectComp"));
 	EffectComp->SetupAttachment(RootComponent);
 
-
-	
 	bReplicates = true;
-//	SetReplicateMovement(true);
-//	SetNetUpdateFrequency(33.0f);
+	SetNetCullDistanceSquared(FMath::Square(5000.0f));
+	SetNetUpdateFrequency(15.0f);
+	NetPriority = 1.0f;
 	
 }
 

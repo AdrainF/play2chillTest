@@ -25,7 +25,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="cidr-memory-view://42" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://45" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Animations/Notifies/P2C_ANS_WeaponTrace.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Characters/P2C_CharacterBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Characters/P2C_PlayerCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -238,7 +238,7 @@
       <workItem from="1783679746319" duration="14688000" />
       <workItem from="1783703903174" duration="11814000" />
       <workItem from="1783748239287" duration="9455000" />
-      <workItem from="1783848649655" duration="11877000" />
+      <workItem from="1783848649655" duration="13042000" />
     </task>
     <servers />
   </component>

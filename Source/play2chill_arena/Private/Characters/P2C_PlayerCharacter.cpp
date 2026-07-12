@@ -21,6 +21,8 @@ AP2C_PlayerCharacter::AP2C_PlayerCharacter()
 	InteractionComp=CreateDefaultSubobject<UP2C_InteractionComponent>(TEXT("InteractionComp"));
 
 	NetworkComp= CreateDefaultSubobject<UP2C_NetworkComponent>(TEXT("NetworComponent"));
+
+	NetPriority = 3.0f;
 }
 
 void AP2C_PlayerCharacter::Input_Move(const FInputActionValue& InputActionValue)

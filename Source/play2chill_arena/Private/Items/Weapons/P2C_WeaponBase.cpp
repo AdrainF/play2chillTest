@@ -14,7 +14,7 @@ AP2C_WeaponBase::AP2C_WeaponBase()
 	WeaponMesh->SetupAttachment(CollisionComp);
 
 	bReplicates = true;
-	
+	SetNetCullDistanceSquared(FMath::Square(5000.0f));
 }
 
 void AP2C_WeaponBase::StartTrace()
