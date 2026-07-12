@@ -19,13 +19,30 @@ public:
 	AP2C_CharacterBase();
 
 	UPROPERTY(Blueprintable, BlueprintReadWrite, Category = "Components")
-	UP2C_AttributionComponent* AttributionComp;
+	UP2C_AttributionComponent* AttrComp;
+	
+
 protected:
+
+	float OptimizationCheckTimer = 0.0f;
+	
+	UPROPERTY(EditAnywhere, Category = "Optimization")
+	float MaxVisibilityDistance = 5000.0f;
+
+	// Overhead health widget component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UWidgetComponent> OverheadHealthWidget;
-	// Function to update the overhead health widget based on health changes
+	
+	/** Function to update the overhead health widget based on health changes
+	 * @param AttributionComponent - The attribution component that triggered the health change
+	 * @param Health - The new health value
+	 * @param MaxValue - The maximum health value
+	 * @param Delta - The change in health (positive or negative)
+	 * @param InstigatorActor - The actor that caused the health change (e.g., attacker)
+	 * @param DamagedActor - The actor that received the damage (this character)
+	 */
 	UFUNCTION()
-	void UpdateOverheadHealth(UP2C_AttributionComponent* AttributionComponent, float OldValue, float  MaxValue , float NewValue , AActor* InstigatorActor, AActor* DamagedActor);
+	void UpdateOverheadHealth(UP2C_AttributionComponent* AttributionComp, float Health, float  MaxHealth  , float HealthDelta , AActor* InstigatorActor, AActor* DamagedActor);
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
