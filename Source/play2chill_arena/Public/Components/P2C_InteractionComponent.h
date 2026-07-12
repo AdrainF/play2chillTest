@@ -26,6 +26,11 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_Interact();
+	UFUNCTION(BlueprintCallable, Category = "Interaction")
+	void RequestInteract();
+	
 	UFUNCTION(BlueprintCallable, Category = "Interaction")
 	void PrimaryInteract();
 	// Called every frame

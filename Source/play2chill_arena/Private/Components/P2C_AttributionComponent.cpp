@@ -11,9 +11,21 @@ UP2C_AttributionComponent::UP2C_AttributionComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
+	SetIsReplicatedByDefault(true);
 	Health = MaxHealth;
 	Stamina = MaxStamina;
+}
+
+void UP2C_AttributionComponent::Server_ApplyHealthChange_Implementation(float Value, AActor* InstigatorActor,
+	AActor* DamageActor)
+{
+	ApplyHealthChange(Value, InstigatorActor, DamageActor);
+}
+
+bool UP2C_AttributionComponent::Server_ApplyHealthChange_Validate(float Value, AActor* InstigatorActor,
+	AActor* DamageActor)
+{
+	return true;
 }
 
 
@@ -46,15 +58,15 @@ void UP2C_AttributionComponent::OnRep_KillCount( const int32 OldKillCount) const
 
 void UP2C_AttributionComponent::ApplyHealthChange(float Value, AActor* InstigatorActor, AActor* DamageActor)
 {
-	if (Value == 0.0f || !IsAlive())return;
+	if (GetOwnerRole() != ROLE_Authority || !IsAlive() || Value == 0.0f) return;
 	
 
 	float OldHealth = Health;
 	LastInstigator = InstigatorActor;
-
+	const float ActualDelta = Health - OldHealth;
 	Health = FMath::Clamp(Health + Value, 0.0f, MaxHealth);
 	
-	OnHealthChanged.Broadcast(this,OldHealth, MaxHealth, Health, LastInstigator, DamageActor);
+	OnHealthChanged.Broadcast(this,Health, MaxHealth, ActualDelta, LastInstigator, DamageActor);
 }
 
 void UP2C_AttributionComponent::ApplyStaminaChange(float Value)
@@ -67,10 +79,13 @@ void UP2C_AttributionComponent::GetLifetimeReplicatedProps(TArray<FLifetimePrope
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(UP2C_AttributionComponent, Health);
-	DOREPLIFETIME(UP2C_AttributionComponent, MaxHealth);
+	//DOREPLIFETIME(UP2C_AttributionComponent, MaxHealth);
+	DOREPLIFETIME_CONDITION(UP2C_AttributionComponent, MaxHealth, COND_InitialOnly);
 	DOREPLIFETIME(UP2C_AttributionComponent, Stamina);
-	DOREPLIFETIME(UP2C_AttributionComponent, MaxStamina);
+	//DOREPLIFETIME(UP2C_AttributionComponent, MaxStamina);
+	DOREPLIFETIME_CONDITION(UP2C_AttributionComponent, MaxStamina, COND_InitialOnly);
 	DOREPLIFETIME(UP2C_AttributionComponent, LastInstigator);
+	DOREPLIFETIME(UP2C_AttributionComponent, KillCount);
 }
 
 // Called every frame

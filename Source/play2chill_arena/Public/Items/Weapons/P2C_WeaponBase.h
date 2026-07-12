@@ -9,7 +9,6 @@
 /**
  * 
  */
-// TODO: zmienic flat weapoonRadius na zmienna w DA
 UCLASS()
 class PLAY2CHILL_ARENA_API AP2C_WeaponBase : public AP2C_PickupItem
 {
@@ -17,35 +16,32 @@ class PLAY2CHILL_ARENA_API AP2C_WeaponBase : public AP2C_PickupItem
 
 public:
 	AP2C_WeaponBase();
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	USkeletalMeshComponent* WeaponMesh;
 
-	
+
 	UFUNCTION(BlueprintCallable, Category = "WeaponCollison")
 	void StartTrace();
 	UFUNCTION(BlueprintCallable, Category = "WeaponCollison")
-	void EndTrace(){bIsTracing = false;};
+	void EndTrace() { bIsTracing = false; };
 	UFUNCTION(BlueprintCallable, Category = "WeaponCollison")
 	void DoFrameToFrameTrace();
 
-	protected:
-
+protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName SocketBaseName = "Socket_Base";
- 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName SocketTipName = "Socket_Tip";
- 
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float ProjectileRadius = 30.0f;
 	bool bIsTracing = false;
-	
+
 	FVector LastBaseLocation;
 	FVector LastTipLocation;
 
 	UPROPERTY()
 	TArray<AActor*> HitActors;
- 
+
 	virtual void Tick(float DeltaTime) override;
-	
-	
 };

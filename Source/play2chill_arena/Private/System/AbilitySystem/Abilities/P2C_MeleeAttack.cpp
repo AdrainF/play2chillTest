@@ -4,6 +4,7 @@
 #include "System/AbilitySystem/Abilities/P2C_MeleeAttack.h"
 
 #include "Characters/P2C_PlayerCharacter.h"
+#include "Components/P2C_NetworkComponent.h"
 
 UP2C_MeleeAttack::UP2C_MeleeAttack()
 {
@@ -16,7 +17,7 @@ void UP2C_MeleeAttack::PerformMeleeAttack()
 
 	if (P2CCharacter && MontageToPlay)
 	{
-		P2CCharacter->Server_PlayAttack(MontageToPlay);
+		P2CCharacter->NetworkComp->Server_PlayAttack(MontageToPlay);
 		
 		float Duration = P2CCharacter->PlayAnimMontage(MontageToPlay);
 		if (Duration > 0.0f)

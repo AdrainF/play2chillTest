@@ -3,6 +3,8 @@
 
 #include "Characters/P2C_PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/P2C_InteractionComponent.h"
+#include "Components/P2C_NetworkComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Input/P2C_EnhancedInputComponent.h"
 #include "System/P2C_GameplayTags.h"
@@ -16,6 +18,9 @@ AP2C_PlayerCharacter::AP2C_PlayerCharacter()
 	FollowCamera->SetupAttachment(CameraBoom);
 
 	AbilitySystemComp=CreateDefaultSubobject<UP2C_AbilitySystemComponent>(TEXT("AbilitySystemComp"));
+	InteractionComp=CreateDefaultSubobject<UP2C_InteractionComponent>(TEXT("InteractionComp"));
+
+	NetworkComp= CreateDefaultSubobject<UP2C_NetworkComponent>(TEXT("NetworComponent"));
 }
 
 void AP2C_PlayerCharacter::Input_Move(const FInputActionValue& InputActionValue)
@@ -57,6 +62,17 @@ void AP2C_PlayerCharacter::Input_AttackRanged(const FInputActionValue& InputActi
 {
 }
 
+void AP2C_PlayerCharacter::Input_Interaction(const FInputActionValue& InputActionValue)
+{
+	InteractionComp->RequestInteract();
+}
+
+void AP2C_PlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AP2C_PlayerCharacter, EquippedWeapon);
+}
+
 void AP2C_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	
@@ -73,5 +89,6 @@ void AP2C_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Jump);
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Attack_Melee, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_AttackMelee);
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Attack_Ranged, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_AttackRanged);
-	
+	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Interact, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Interaction);
+
 }

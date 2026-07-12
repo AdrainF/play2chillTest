@@ -5,6 +5,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Characters/P2C_PlayerCharacter.h"
+#include "Components/P2C_NetworkComponent.h"
 #include "Items/Weapons/P2C_WeaponBase.h"
 
 void UP2C_RangedAttack::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
@@ -13,13 +14,13 @@ void UP2C_RangedAttack::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 	if (ensureAlways(ClassToSpawn))
 	{
 		AP2C_PlayerCharacter* Character= GetP2CCharacter();
-		if (!Character->HasAuthority()) return; 
-		if (!Character || !Character->EquippedWeapon || !Character->EquippedWeapon->WeaponMesh)
+
+		if (!Character || !Character->EquippedWeapon )
 		{
-			UE_LOG(LogTemp, Warning, TEXT("SpawnProjectile: Missing weapon mesh on client/server! Aborting."));
+			UE_LOG(LogTemp, Warning, TEXT("SpawnProjectile: Missing weapon on client/server!"));
 			return;
 		}
-		FVector HandLocation = Character->EquippedWeapon->WeaponMesh->GetSocketLocation(SpawnSocketName);
+		FVector WeaponLocation = Character->EquippedWeapon->WeaponMesh->GetSocketLocation(SpawnSocketName);
 
 		FHitResult Hit;
 		FVector TraceStart;
@@ -50,19 +51,19 @@ void UP2C_RangedAttack::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 
 		if (GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjParams, Shape, Params))
 		{
-			ProjRotation = FRotationMatrix::MakeFromX(Hit.ImpactPoint - HandLocation).Rotator();
+			ProjRotation = FRotationMatrix::MakeFromX(Hit.ImpactPoint - WeaponLocation).Rotator();
 		}
 		else
 		{
-			ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
+			ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - WeaponLocation).Rotator();
 		}
 	
-		FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
-		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
-
-
+		FTransform SpawnTM = FTransform(ProjRotation, WeaponLocation);
+		Character->NetworkComp->Request_SpawnProjectile(ClassToSpawn, WeaponLocation, ProjRotation);
+		
 	}
 }
+
 
 void UP2C_RangedAttack::PerformRangedAttack()
 {
@@ -70,7 +71,7 @@ void UP2C_RangedAttack::PerformRangedAttack()
 
 	if (P2CCharacter && MontageToPlay)
 	{
-		P2CCharacter->Server_PlayAttack(MontageToPlay);
+		P2CCharacter->NetworkComp->Server_PlayAttack(MontageToPlay);
 		
 		float Duration = P2CCharacter->PlayAnimMontage(MontageToPlay);
 		if (Duration > 0.0f)
@@ -86,6 +87,7 @@ void UP2C_RangedAttack::PerformRangedAttack()
 				BlendDelegate.BindUObject(this, &UP2C_RangedAttack::OnAttackMontageEnded);
 				AnimInstance->Montage_SetBlendingOutDelegate(BlendDelegate, MontageToPlay);
 
+				
 				P2CCharacter->GetWorldTimerManager().SetTimer(AttackTimer,this, &UP2C_RangedAttack::PrimayAtttack_TimeElapsed,  DelayTime);
 			}
 		}

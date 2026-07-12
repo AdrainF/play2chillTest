@@ -24,9 +24,8 @@ class PLAY2CHILL_ARENA_API UP2C_RangedAttack : public UP2C_AbilityBase
 	FTimerHandle AttackTimer;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float DelayTime;
-	
+	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
-
 	UFUNCTION(BlueprintCallable, Category = "Ranged Attack Combo")
 	void PerformRangedAttack();
 

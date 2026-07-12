@@ -12,6 +12,9 @@ AP2C_WeaponBase::AP2C_WeaponBase()
 	
 	WeaponMesh=CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	WeaponMesh->SetupAttachment(CollisionComp);
+
+	bReplicates = true;
+	
 }
 
 void AP2C_WeaponBase::StartTrace()
@@ -35,7 +38,7 @@ void AP2C_WeaponBase::DoFrameToFrameTrace()
 	ActorsToIgnore.Add(GetOwner());
  
 	
-	float WeaponRadius = 30.0f; 
+	float WeaponRadius = ProjectileRadius; 
 	
 	bool bHit = UKismetSystemLibrary::SphereTraceMulti(
 		GetWorld(),

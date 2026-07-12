@@ -12,6 +12,14 @@
 class UP2C_AbilityDataAsset;
 class USkeletalMesh;
 
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	EWT_None		UMETA(DisplayName = "None"),
+	EWT_Ranged   	UMETA(DisplayName = "Bow"),
+	EWT_Melee		UMETA(DisplayName = "Sword")
+};
+
 UCLASS()
 class PLAY2CHILL_ARENA_API UMyP2C_WeaponDataAsset : public UP2C_ItemDataAssetBase
 {
@@ -28,7 +36,9 @@ public:
 	TSubclassOf<AActor> WeaponActorClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 	TObjectPtr<USkeletalMesh> WeaponMesh;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	EWeaponType WeaponType= EWeaponType::EWT_None;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Socket")
 	FName WeaponSocket;
 	

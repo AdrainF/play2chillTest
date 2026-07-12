@@ -3,7 +3,9 @@
 
 #include "Components/P2C_InteractionComponent.h"
 
-#include "GameFramework/Character.h"
+#include "Camera/CameraComponent.h"
+#include "Characters/P2C_PlayerCharacter.h"
+#include "Items/Weapons/P2C_WeaponBase.h"
 #include "Interfaces/P2C_InteractionInterface.h"
 
 // Sets default values for this component's properties
@@ -13,7 +15,7 @@ UP2C_InteractionComponent::UP2C_InteractionComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	SetIsReplicatedByDefault(true);
 }
 
 
@@ -23,7 +25,28 @@ void UP2C_InteractionComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+}
+
+void UP2C_InteractionComponent::Server_Interact_Implementation()
+{
+	PrimaryInteract();
+}
+
+bool UP2C_InteractionComponent::Server_Interact_Validate()
+{
+	return true;
+}
+
+void UP2C_InteractionComponent::RequestInteract()
+{
+	if (!GetOwner()->HasAuthority())
+	{
+		Server_Interact();
+	}
+	else
+	{
+		PrimaryInteract();
+	}
 }
 
 void UP2C_InteractionComponent::PrimaryInteract()
@@ -35,12 +58,16 @@ void UP2C_InteractionComponent::PrimaryInteract()
 	float Radius = SphereRadius;
 	CollisionShape.SetSphere(Radius);
 	FCollisionQueryParams Params;
-	ACharacter* MyCharacter = Cast<ACharacter>(GetOwner());
-	FVector Start = MyCharacter->GetPawnViewLocation();
-	FVector End = MyCharacter->GetPawnViewLocation() + (MyCharacter->GetControlRotation().Vector() * InteractionDistance);
-	Params.AddIgnoredActor(MyCharacter);
+	AP2C_PlayerCharacter* MyCharacter = Cast<AP2C_PlayerCharacter>(GetOwner());
+	FVector Start = MyCharacter->FollowCamera->GetComponentLocation();
+	FVector End = MyCharacter->FollowCamera->GetComponentLocation() + (MyCharacter->GetControlRotation().Vector() *
+		InteractionDistance);
 
-	bool bBlockHit = GetWorld()->SweepMultiByObjectType(OutHits, Start, End, FQuat::Identity, ObjectQueryParams, CollisionShape, Params);
+
+	Params.AddIgnoredActor(MyCharacter);
+	Params.AddIgnoredActor(MyCharacter->EquippedWeapon);
+	bool bBlockHit = GetWorld()->SweepMultiByObjectType(OutHits, Start, End, FQuat::Identity, ObjectQueryParams,
+	                                                    CollisionShape, Params);
 
 	FColor LineColor = bBlockHit ? FColor::Green : FColor::Red;
 
@@ -55,17 +82,16 @@ void UP2C_InteractionComponent::PrimaryInteract()
 			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
 			break;
 		}
-
 	}
 	DrawDebugLine(GetWorld(), Start, End, LineColor, false, 2.0f, 0, 2.0f);
 }
 
 
 // Called every frame
-void UP2C_InteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UP2C_InteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                              FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
-

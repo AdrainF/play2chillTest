@@ -25,6 +25,12 @@ void UMyP2C_WeaponDataAsset::ExecutePickupEffect(AActor* Interactor) const
 	SpawnParams.Owner = Character;
 	SpawnParams.Instigator = Character;
  
+	
+	if (Character->EquippedWeapon)
+	{
+		Character->EquippedWeapon->Destroy();
+		Character->EquippedWeapon = nullptr;
+	}
 	// Spawn at character's location initially
 	AActor* NewWeapon = World->SpawnActor<AActor>(WeaponActorClass, Character->GetActorTransform(), SpawnParams);
  

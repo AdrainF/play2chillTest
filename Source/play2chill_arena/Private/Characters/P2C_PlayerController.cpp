@@ -19,7 +19,10 @@ void AP2C_PlayerController::BeginPlay()
 			GetPawn()->GetComponentByClass(UP2C_AttributionComponent::StaticClass()));
 		if (AttriComp)
 		{
-			AttriComp->OnHealthChanged.AddDynamic(PlayerHUD.Get(), &UP2C_PlayerWidget::UpdateHealth);
+			if (!AttriComp->OnHealthChanged.IsAlreadyBound(PlayerHUD, &UP2C_PlayerWidget::UpdateHealth))
+			{
+				AttriComp->OnHealthChanged.AddDynamic(PlayerHUD, &UP2C_PlayerWidget::UpdateHealth);
+			}
 			AttriComp->OnStaminaChanged.AddDynamic(PlayerHUD, &UP2C_PlayerWidget::UpdateStamina);
 			AttriComp->OnKillCountChanged.AddDynamic(PlayerHUD, &UP2C_PlayerWidget::UpdateKillCount);
 

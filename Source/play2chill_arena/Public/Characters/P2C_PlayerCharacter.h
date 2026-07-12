@@ -35,7 +35,7 @@ public:
 	TObjectPtr<USpringArmComponent>  CameraBoom;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Camera")
 	TObjectPtr<UCameraComponent> FollowCamera;
-
+	UPROPERTY(Replicated,BlueprintReadOnly)
 	TObjectPtr<AP2C_WeaponBase> EquippedWeapon;
 	
 	// Ability System Component for this character
@@ -52,12 +52,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 	TObjectPtr<UP2C_NetworkComponent> NetworkComp;
 
-
-	UFUNCTION(Server, Reliable, WithValidation)
-	void Server_PlayAttack(UAnimMontage* Montage);
-	UFUNCTION(NetMulticast, Reliable)
-	void Multicast_PlayAttack(UAnimMontage* Montage);
-
+	
 	/** Handles moving forward/backward */
 	void Input_Move(const FInputActionValue& InputActionValue);
  
@@ -76,5 +71,7 @@ public:
 	void Input_Interaction(const FInputActionValue& InputActionValue);
 
 protected:
+
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 };
