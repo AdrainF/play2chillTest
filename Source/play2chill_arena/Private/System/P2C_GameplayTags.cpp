@@ -23,6 +23,7 @@ void FP2C_GameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 	AddTag(InputTag_Jump, "InputTag.Jump", "Jump input");
 	AddTag(InputTag_Attack_Melee, "InputTag.Attack.Melee", "Attack input");
 	AddTag(InputTag_Attack_Ranged, "InputTag.Attack.Ranged", "Ranged attack input");
+	AddTag(InputTag_Interact, "InputTag.Interact", "Interaction input");
 }
 
 void FP2C_GameplayTags::AddTag(FGameplayTag& OutTag, const ANSICHAR* TagName, const ANSICHAR* TagComment)

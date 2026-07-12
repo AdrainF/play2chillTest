@@ -3,7 +3,8 @@
 
 #include "System/AbilitySystem/Abilities/P2C_AbilityBase.h"
 
-#include "GameFramework/Character.h"
+
+#include "Characters/P2C_PlayerCharacter.h"
 #include "System/AbilitySystem/P2C_AbilitySystemComponent.h"
 #include "System/AbilitySystem/Abilities/Data/P2C_AbilityDataAsset.h"
 
@@ -27,14 +28,16 @@ void UP2C_AbilityBase::FinishAbility()
 	{
 		//Remove the ability tag from the owning component when the ability finishes
 		OwningComp->RemoveActiveTag(AbilityData->AbilityTag);
+		OwningComp->NotifyAbilityFinished(this);
 	}
  
 	// Mark the ability object for garbage collection
 	MarkAsGarbage();
 }
 
-ACharacter* UP2C_AbilityBase::GetP2CCharacter() const
+AP2C_PlayerCharacter* UP2C_AbilityBase::GetP2CCharacter() const
 {
 	if (!OwningComp){ return nullptr; }
-	return Cast<ACharacter>(OwningComp->GetOwner());
+	return Cast<AP2C_PlayerCharacter>(OwningComp->GetOwner());
 }
+

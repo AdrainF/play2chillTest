@@ -21,10 +21,12 @@ struct FP2C_GameplayTags
 	FGameplayTag InputTag_Jump;
 	FGameplayTag InputTag_Attack_Melee;
 	FGameplayTag InputTag_Attack_Ranged;
+	FGameplayTag InputTag_Interact;
 
 protected:
+	// Adds all defined tags to the provided GameplayTagsManager
 	void AddAllTags(UGameplayTagsManager& Manager);
-
+	// Adds a single tag to the provided GameplayTagsManager
 	void AddTag(FGameplayTag& OutTag, const ANSICHAR* TagName, const ANSICHAR* TagComment);
 
 private:

@@ -13,56 +13,127 @@ UP2C_AbilitySystemComponent::UP2C_AbilitySystemComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
-	// ...
+	SetIsReplicatedByDefault(true);
 }
 
-bool UP2C_AbilitySystemComponent::CanActivateAbility(const UP2C_AbilityDataAsset* DA) const 
+bool UP2C_AbilitySystemComponent::CanActivateAbility(const UP2C_AbilityDataAsset* DA) const
 {
 	if (!DA) return false;
 	// Check if the ability is granted
 	if (ActiveTags.HasAny(DA->AbilityBlockTags))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Ability with tag %s is blocked"), *DA->AbilityTag.ToString() );
+		UE_LOG(LogTemp, Warning, TEXT("Ability with tag %s is blocked"), *DA->AbilityTag.ToString());
 		return false;
 	}
 	return true;
 }
 
-void UP2C_AbilitySystemComponent::GrantAbility(FGameplayTag AbilityTag, UP2C_AbilityDataAsset* DA)
+void UP2C_AbilitySystemComponent::GrantAbility(UP2C_AbilityDataAsset* DA)
 {
 	if (!DA) return;
 	// Check if the ability is already granted
-	if (ActiveAbilities.Contains(AbilityTag))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Ability with tag %s is already granted."), *AbilityTag.ToString());
-		return;
-	}
-	
-	ActiveAbilities.Add(AbilityTag, DA);
+
+	for (auto& RepAbilityTag : ReplicatedAbilities)
+		if (RepAbilityTag.Tag == DA->AbilityTag)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Ability with tag %s is already granted."), *DA->AbilityTag.ToString());
+			return;
+		}
+
+
+	FAbilitySlot AbilityToAdd = FAbilitySlot(DA->AbilityTag, DA);
+	ReplicatedAbilities.Add(AbilityToAdd);
 }
 
 void UP2C_AbilitySystemComponent::ActivateAbility(const FGameplayTag AbilityTag)
 {
-	if (!ActiveAbilities.Contains(AbilityTag))
+	UP2C_AbilityDataAsset* FoundDA = nullptr;
+	for (auto& Elem : ReplicatedAbilities)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Ability with tag %s is not granted."), *AbilityTag.ToString());
-		return;	
+		FGameplayTag& GrantedTag = Elem.Tag;
+		if (GrantedTag.MatchesTag(AbilityTag))
+		{
+			FoundDA = Elem.Data;
+			break;
+		}
 	}
-	// Find the ability data asset associated with the tag
-	UP2C_AbilityDataAsset** FoundDA = ActiveAbilities.Find(AbilityTag);
-	if (!FoundDA) return;
-	const UP2C_AbilityDataAsset* DA = *FoundDA;
-	
-	// Create an instance of the ability class
-	UP2C_AbilityBase* AbilityToRun = NewObject<UP2C_AbilityBase>(this, DA->AbilityClass);
+	if (!FoundDA)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No ability found matching tag hierarchy for: %s"), *AbilityTag.ToString());
+		return;
+	}
 
+
+	// Create an instance of the ability class
+	UP2C_AbilityBase* AbilityToRun = NewObject<UP2C_AbilityBase>(this, FoundDA->AbilityClass);
 	if (AbilityToRun)
 	{
-		AbilityToRun->Internal_StartAbility(this, DA);
+		RunningAbilities.Add(AbilityToRun);
+		AbilityToRun->Internal_StartAbility(this, FoundDA);
 	}
-	
 }
 
+void UP2C_AbilitySystemComponent::RequestActivateAbility(FGameplayTag AbilityTag)
+{
+	if (!GetOwner()->HasAuthority())
+	{
+		Server_ActivateAbility(AbilityTag);
+	}
+	else
+	{
+		ActivateAbility(AbilityTag);
+	}
+}
 
+void UP2C_AbilitySystemComponent::RequestGrantAbility(UP2C_AbilityDataAsset* DA)
+{
+	if (!DA) return;
+	if (!GetOwner()->HasAuthority())
+	{
+		Server_GrantAbility(DA);
+	}
+	else
+	{
+		GrantAbility(DA);
+	}
+}
 
+void UP2C_AbilitySystemComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME(UP2C_AbilitySystemComponent, ReplicatedAbilities);
+	DOREPLIFETIME(UP2C_AbilitySystemComponent, ActiveTags);
+	DOREPLIFETIME(UP2C_AbilitySystemComponent, RunningAbilities);
+}
+
+void UP2C_AbilitySystemComponent::NotifyAbilityFinished(UP2C_AbilityBase* Ability)
+{
+	if (Ability)
+	{
+		RunningAbilities.Remove(Ability);
+	}
+}
+
+void UP2C_AbilitySystemComponent::Server_GrantAbility_Implementation(UP2C_AbilityDataAsset* DA)
+{
+	if (DA)
+	{
+		GrantAbility(DA);
+	}
+}
+
+bool UP2C_AbilitySystemComponent::Server_GrantAbility_Validate(UP2C_AbilityDataAsset* DA)
+{
+	return true;
+}
+
+void UP2C_AbilitySystemComponent::Server_ActivateAbility_Implementation(FGameplayTag AbilityTag)
+{
+	ActivateAbility(AbilityTag);
+}
+
+bool UP2C_AbilitySystemComponent::Server_ActivateAbility_Validate(FGameplayTag AbilityTag)
+{
+	return true;
+}

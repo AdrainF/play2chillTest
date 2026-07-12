@@ -11,9 +11,13 @@ class UCameraComponent;
 class UP2C_InputConfig;
 struct FInputActionValue;
 class UP2C_AbilitySystemComponent;
+class UP2C_InteractionComponent;
+class AP2C_WeaponBase;
+class UP2C_NetworkComponent;
 /**
  * 
  */
+
 UCLASS()
 class PLAY2CHILL_ARENA_API AP2C_PlayerCharacter : public AP2C_CharacterBase
 {
@@ -22,17 +26,38 @@ class PLAY2CHILL_ARENA_API AP2C_PlayerCharacter : public AP2C_CharacterBase
 public:
 	AP2C_PlayerCharacter();
 
+	UPROPERTY()
+	int32 CurrentMeleeComboIndex;
+	UPROPERTY()
+	bool bSaveAttackInput=false;
+	
 	UPROPERTY(Blueprintable, EditAnywhere, Category = "Camera")
 	TObjectPtr<USpringArmComponent>  CameraBoom;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Camera")
 	TObjectPtr<UCameraComponent> FollowCamera;
+
+	TObjectPtr<AP2C_WeaponBase> EquippedWeapon;
+	
+	// Ability System Component for this character
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
 	TObjectPtr<UP2C_AbilitySystemComponent> AbilitySystemComp;
 
 	/** The input config that maps Input Actions to Input Tags*/
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UP2C_InputConfig> InputConfig;
- 
+
+	UPROPERTY(EditDefaultsOnly, Category = "Component")
+	TObjectPtr<UP2C_InteractionComponent> InteractionComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Component")
+	TObjectPtr<UP2C_NetworkComponent> NetworkComp;
+
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_PlayAttack(UAnimMontage* Montage);
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayAttack(UAnimMontage* Montage);
+
 	/** Handles moving forward/backward */
 	void Input_Move(const FInputActionValue& InputActionValue);
  
@@ -48,7 +73,8 @@ public:
 	/** Handles Ranged Attack */
 	void Input_AttackRanged(const FInputActionValue& InputActionValue);
 
+	void Input_Interaction(const FInputActionValue& InputActionValue);
+
 protected:
-	
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 };

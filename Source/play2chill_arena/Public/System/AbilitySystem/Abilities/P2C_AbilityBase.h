@@ -20,22 +20,24 @@ class PLAY2CHILL_ARENA_API UP2C_AbilityBase : public UObject
 
 public:
 	// Initializes the ability with the owning component and ability data
-	void Internal_StartAbility(UP2C_AbilitySystemComponent* InComp, const UP2C_AbilityDataAsset* InDA);
+	virtual void Internal_StartAbility(UP2C_AbilitySystemComponent* InComp, const UP2C_AbilityDataAsset* InDA);
 	// Activates the ability, calling the Blueprint-implementable event OnActivate
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	void FinishAbility();
 	// Returns the character that owns this ability, if any
 	UFUNCTION(BlueprintPure, Category = "P2C|Ability")
-	ACharacter* GetP2CCharacter() const;
+	AP2C_PlayerCharacter* GetP2CCharacter() const;
 protected:
 	// Blueprint-implementable event that is called when the ability is activated
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "On Activate"))
 	void K2_OnActivate();
- 
+	
+	// Reference to the owning ability system component
 	UPROPERTY(BlueprintReadOnly, Category = "Ability")
 	TObjectPtr<UP2C_AbilitySystemComponent> OwningComp;
- 
+	// Reference to the ability data asset that defines this ability's properties and behavior
 	UPROPERTY(BlueprintReadOnly, Category = "Ability")
 	TObjectPtr<const UP2C_AbilityDataAsset> AbilityData;
-	
+
+
 };
