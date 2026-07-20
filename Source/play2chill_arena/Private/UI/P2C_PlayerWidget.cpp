@@ -3,6 +3,7 @@
 
 #include "UI/P2C_PlayerWidget.h"
 
+#include "Components/P2C_AttributionComponent.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 
@@ -11,12 +12,7 @@ void UP2C_PlayerWidget::UpdateHealth(UP2C_AttributionComponent* AttributionCompo
 		HealthBar->SetPercent(Health / MaxValue);
 }
 
-void UP2C_PlayerWidget::UpdateStamina(UP2C_AttributionComponent* AttributionComponent, float OldValue, float MaxValue, float NewValue)
+void UP2C_PlayerWidget::UpdateStamina(UP2C_AttributionComponent* AttributionComponent, float Stamina, float MaxValue, float DeltaValue)
 {
-		StaminaBar->SetPercent(NewValue / MaxValue);
-}
-
-void UP2C_PlayerWidget::UpdateKillCount( const int32 NewKillCount)
-{
-		KillCountText->SetText(FText::AsNumber(NewKillCount));
+		StaminaBar->SetPercent(Stamina / MaxValue);
 }

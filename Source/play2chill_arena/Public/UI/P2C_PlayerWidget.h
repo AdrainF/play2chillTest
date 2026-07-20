@@ -20,10 +20,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateHealth(UP2C_AttributionComponent* AttributionComponent, float Health, float MaxValue, float Delta, AActor* InstigatorActor, AActor* DamagedActor);
 	UFUNCTION(BlueprintCallable)
-	void UpdateStamina(UP2C_AttributionComponent* AttributionComponent, float OldValue, float NewValue, float MaxValue);
-	UFUNCTION(BlueprintCallable)
-	void UpdateKillCount( const int32 NewKillCount);
-
+	void UpdateStamina(UP2C_AttributionComponent* AttributionComponent, float Stamina, float MaxValue, float DelatValue);
+	
 protected:
 	// Bind the health bar, stamina bar, and kill count text to the widget
 	UPROPERTY(meta=(BindWidget))
@@ -31,7 +29,5 @@ protected:
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UProgressBar> StaminaBar;
-
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UTextBlock> KillCountText;
+	
 };

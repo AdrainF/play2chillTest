@@ -30,13 +30,14 @@ public:
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void Server_PlayAttack(UAnimMontage* Montage);
-	
-	UFUNCTION(NetMulticast, Reliable)
-	void Multicast_PlayAttack(UAnimMontage* Montage);
 
+	UFUNCTION(BlueprintCallable, Category = "PlayMontage")
+	void Request_PlayAttack(UAnimMontage* Montage);
+
+	UFUNCTION(Server, Reliable)
+	void Server_RequestRespawn();
 	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
+	AController* GetController();
 };
