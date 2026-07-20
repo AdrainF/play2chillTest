@@ -13,6 +13,7 @@
 #include "System/P2C_GameplayTags.h"
 #include "System/AbilitySystem/P2C_AbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Blueprint/UserWidget.h"
 
 AP2C_PlayerCharacter::AP2C_PlayerCharacter()
 {
@@ -90,6 +91,26 @@ void AP2C_PlayerCharacter::Input_Interaction(const FInputActionValue& InputActio
 	InteractionComp->RequestInteract();
 }
 
+void AP2C_PlayerCharacter::Input_OpenMenu(const FInputActionValue& InputActionValue)
+{
+	if (!MainMenuWidget) return;
+	
+	UUserWidget* MenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuWidget);
+	if (MenuWidget)
+	{
+		MenuWidget->AddToViewport();
+		
+		if (APlayerController* PC = Cast<APlayerController>(GetController()))
+		{
+			PC->bShowMouseCursor = true;
+			
+			FInputModeGameAndUI InputMode;
+			InputMode.SetWidgetToFocus(MenuWidget->TakeWidget());
+			PC->SetInputMode(InputMode);
+		}
+	}
+}
+
 void AP2C_PlayerCharacter::Death_TimeElaps()
 {
 	Destroy();
@@ -140,5 +161,6 @@ void AP2C_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Jump);
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Attack, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Attack);
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Interact, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Interaction);
+	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_OpenMenu, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_OpenMenu);
 
 }

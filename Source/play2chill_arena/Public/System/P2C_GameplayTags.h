@@ -21,6 +21,7 @@ struct FP2C_GameplayTags
 	FGameplayTag InputTag_Jump;
 	FGameplayTag InputTag_Attack;
 	FGameplayTag InputTag_Interact;
+	FGameplayTag InputTag_OpenMenu;
 
 protected:
 	// Adds all defined tags to the provided GameplayTagsManager

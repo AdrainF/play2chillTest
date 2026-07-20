@@ -23,6 +23,7 @@ void FP2C_GameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 	AddTag(InputTag_Jump, "InputTag.Jump", "Jump input");
 	AddTag(InputTag_Attack, "InputTag.Attack", "Attack input");
 	AddTag(InputTag_Interact, "InputTag.Interact", "Interaction input");
+	AddTag(InputTag_OpenMenu, "InputTag.OpenMenu", "Open Menu");
 }
 
 void FP2C_GameplayTags::AddTag(FGameplayTag& OutTag, const ANSICHAR* TagName, const ANSICHAR* TagComment)

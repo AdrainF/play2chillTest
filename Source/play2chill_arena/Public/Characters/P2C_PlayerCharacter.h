@@ -44,7 +44,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputMappingContext* DefaultMappingContext;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Menu")
+	TSubclassOf<UUserWidget> MainMenuWidget;
 	
 	// Ability System Component for this character
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
@@ -73,11 +75,10 @@ public:
  
 	/** Handles Melee Attack */
 	void Input_Attack(const FInputActionValue& InputActionValue);
-
-	/** Handles Ranged Attack */
-	void Input_AttackRanged(const FInputActionValue& InputActionValue) const;
-
+	/** Handles Interact */
 	void Input_Interaction(const FInputActionValue& InputActionValue);
+	/** Handles Menu */
+	void Input_OpenMenu(const FInputActionValue& InputActionValue);
 
 	
 protected:
