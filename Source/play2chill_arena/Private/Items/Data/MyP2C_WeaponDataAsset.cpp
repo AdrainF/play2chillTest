@@ -17,23 +17,25 @@ void UMyP2C_WeaponDataAsset::ExecutePickupEffect(AActor* Interactor) const
  
 	UWorld* World = Interactor->GetWorld();
 	if (!World) return;
-
-	Character->AbilitySystemComp->GrantAbility(WeaponAbility);
 	
 	//Spawn the weapon actor
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = Character;
 	SpawnParams.Instigator = Character;
- 
 	
 	if (Character->EquippedWeapon)
 	{
+	UMyP2C_WeaponDataAsset*	WeaponDA = Cast<UMyP2C_WeaponDataAsset>(Character->EquippedWeapon->ItemDataAsset);
+		
+		TObjectPtr<UP2C_AbilityDataAsset> AbilityToRemovek = WeaponDA->WeaponAbility;
+		Character->AbilitySystemComp->RevokeAbility(AbilityToRemovek);
 		Character->EquippedWeapon->Destroy();
 		Character->EquippedWeapon = nullptr;
 	}
 	// Spawn at character's location initially
 	AActor* NewWeapon = World->SpawnActor<AActor>(WeaponActorClass, Character->GetActorTransform(), SpawnParams);
- 
+	
+	Character->AbilitySystemComp->GrantAbility(WeaponAbility);
 	if (NewWeapon)
 	{
 		

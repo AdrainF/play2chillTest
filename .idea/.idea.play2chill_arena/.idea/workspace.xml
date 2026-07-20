@@ -24,8 +24,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="cidr-memory-view://106" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://1" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Animations/Notifies/P2C_ANS_WeaponTrace.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Characters/P2C_CharacterBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Characters/P2C_PlayerCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -34,6 +33,7 @@
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Components/P2C_InteractionComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Components/P2C_NetworkComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Core/P2C_ArenaGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Core/P2C_ArenaPlayerState.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Input/P2C_EnhancedInputComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Input/P2C_InputConfig.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Items/Consumable/P2C_ConsumableBase.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -41,6 +41,9 @@
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Items/Data/P2C_ConsumableDataAsset.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Items/P2C_PickupItem.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Items/Weapons/P2C_WeaponBase.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Lobby/P2C_LobbyGameMode.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Lobby/P2C_LobbyGameState.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Lobby/P2C_LobbyPlayerState.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/Projectiles/P2C_ProjectileBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/System/AbilitySystem/Abilities/Data/P2C_AbilityDataAsset.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Private/System/AbilitySystem/Abilities/P2C_AbilityBase.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -58,6 +61,7 @@
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Components/P2C_InteractionComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Components/P2C_NetworkComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Core/P2C_ArenaGameInstance.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Core/P2C_ArenaPlayerState.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Input/P2C_EnhancedInputComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Input/P2C_InputConfig.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Items/Consumable/P2C_ConsumableBase.h" root0="FORCE_HIGHLIGHTING" />
@@ -65,6 +69,9 @@
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Items/Data/P2C_ConsumableDataAsset.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Items/P2C_PickupItem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Items/Weapons/P2C_WeaponBase.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Lobby/P2C_LobbyGameMode.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Lobby/P2C_LobbyGameState.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Lobby/P2C_LobbyPlayerState.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/Projectiles/P2C_ProjectileBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/System/AbilitySystem/Abilities/Data/P2C_AbilityDataAsset.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/play2chill_arena/Public/System/AbilitySystem/Abilities/P2C_AbilityBase.h" root0="FORCE_HIGHLIGHTING" />
@@ -97,7 +104,9 @@
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/Animation/AnimNotifies/AnimNotifyState.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Controller.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/Actor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/Animation/AnimInstance.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/Character.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -105,8 +114,11 @@
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/Components/SkeletalMeshComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/KismetSystemLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/UnrealEngine.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/GameplayTags/Classes/GameplayTagContainer.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Launch/Private/Launch.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Launch/Private/Windows/LaunchWindows.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Slate/Private/Framework/Application/SlateApplication.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://D:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/UMG/Public/Components/TextBlock.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -117,21 +129,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "C/C++ Project.play2chill_arena.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C/C++ Project.play2chill_arena.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="C/C++ Project.play2chill_arena">
     <configuration name="UE5" type="CppProject" factoryName="C++ Project">
       <option name="DEFAULT_PROJECT_PATH" value="$PROJECT_DIR$/Intermediate/ProjectFiles/UE5.vcxproj" />
@@ -250,6 +262,14 @@
       <workItem from="1783703903174" duration="11814000" />
       <workItem from="1783748239287" duration="9455000" />
       <workItem from="1783848649655" duration="29417000" />
+      <workItem from="1783928699180" duration="19262000" />
+      <workItem from="1783971678313" duration="3955000" />
+      <workItem from="1784045468514" duration="19395000" />
+      <workItem from="1784131747257" duration="8989000" />
+      <workItem from="1784146463266" duration="1257000" />
+      <workItem from="1784187048969" duration="11276000" />
+      <workItem from="1784202765079" duration="366000" />
+      <workItem from="1784533541575" duration="5289000" />
     </task>
     <servers />
   </component>

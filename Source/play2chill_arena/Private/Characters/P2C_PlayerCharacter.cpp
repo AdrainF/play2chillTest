@@ -3,8 +3,10 @@
 
 #include "Characters/P2C_PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/P2C_AttributionComponent.h"
 #include "Components/P2C_InteractionComponent.h"
 #include "Components/P2C_NetworkComponent.h"
+
 #include "GameFramework/SpringArmComponent.h"
 #include "Input/P2C_EnhancedInputComponent.h"
 #include "System/P2C_GameplayTags.h"
@@ -23,6 +25,23 @@ AP2C_PlayerCharacter::AP2C_PlayerCharacter()
 	NetworkComp= CreateDefaultSubobject<UP2C_NetworkComponent>(TEXT("NetworComponent"));
 
 	NetPriority = 3.0f;
+}
+
+void AP2C_PlayerCharacter::Die(UP2C_AttributionComponent* AttriComp, AActor* InstigatorActor, AActor* DamageActor)
+{
+	if (!HasAuthority()) return;
+ 
+	// Notify the GameMode that we need to respawn
+	NetworkComp->Server_RequestRespawn();
+	if (DeathMontage)
+	{
+		NetworkComp->Server_PlayAttack(DeathMontage);
+	}
+	
+	FTimerDelegate DeathDelegate;
+	DeathDelegate.BindUObject(this, &AP2C_PlayerCharacter::Death_TimeElaps);
+	// Destroy the old body
+	GetWorldTimerManager().SetTimer(DeathTimer,DeathDelegate,2.0f,false);
 }
 
 void AP2C_PlayerCharacter::Input_Move(const FInputActionValue& InputActionValue)
@@ -56,17 +75,28 @@ void AP2C_PlayerCharacter::Input_Jump(const FInputActionValue& InputActionValue)
 	Jump();
 }
 
-void AP2C_PlayerCharacter::Input_AttackMelee(const FInputActionValue& InputActionValue)
-{
-}
-
-void AP2C_PlayerCharacter::Input_AttackRanged(const FInputActionValue& InputActionValue)
+void AP2C_PlayerCharacter::Input_Attack(const FInputActionValue& InputActionValue)
 {
 }
 
 void AP2C_PlayerCharacter::Input_Interaction(const FInputActionValue& InputActionValue)
 {
 	InteractionComp->RequestInteract();
+}
+
+void AP2C_PlayerCharacter::Death_TimeElaps()
+{
+	Destroy();
+}
+
+void AP2C_PlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (!AttrComp->OnDeath.IsAlreadyBound(this, &AP2C_PlayerCharacter::Die))
+	{
+		AttrComp->OnDeath.AddDynamic(this, &AP2C_PlayerCharacter::Die);
+	}
 }
 
 void AP2C_PlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -89,8 +119,7 @@ void AP2C_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Move);
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Look, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Look);
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Jump);
-	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Attack_Melee, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_AttackMelee);
-	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Attack_Ranged, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_AttackRanged);
+	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Attack, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Attack);
 	EnhancedInputComp->BindActionByTag(InputConfig, GameplayTags.InputTag_Interact, ETriggerEvent::Triggered, this, &AP2C_PlayerCharacter::Input_Interaction);
 
 }

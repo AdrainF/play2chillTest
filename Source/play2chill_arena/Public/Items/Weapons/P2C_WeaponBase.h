@@ -20,27 +20,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	USkeletalMeshComponent* WeaponMesh;
 
-
-	UFUNCTION(BlueprintCallable, Category = "WeaponCollison")
-	void StartTrace();
-	UFUNCTION(BlueprintCallable, Category = "WeaponCollison")
-	void EndTrace();
-	UFUNCTION(BlueprintCallable, Category = "WeaponCollison")
-	void DoFrameToFrameTrace();
-	
-protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName SocketBaseName = "Socket_Base";
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName SocketTipName = "Socket_Tip";
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	float ProjectileRadius = 30.0f;
-	bool bIsTracing = false;
-	
-	uint64 LastStartFrame = 0;
-	uint64 LastEndFrame = 0;
+	float TraceRadius = 30.0f;
+
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void Request_ClearHitActors();
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ClearHitActors();
 	
 	UPROPERTY()
 	TSet<AActor*> HitActors;
+	
 	virtual void Tick(float DeltaTime) override;
 };

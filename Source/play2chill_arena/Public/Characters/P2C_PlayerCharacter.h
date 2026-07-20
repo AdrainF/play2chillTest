@@ -30,6 +30,7 @@ public:
 	int32 CurrentMeleeComboIndex;
 	UPROPERTY()
 	bool bSaveAttackInput=false;
+
 	
 	UPROPERTY(Blueprintable, EditAnywhere, Category = "Camera")
 	TObjectPtr<USpringArmComponent>  CameraBoom;
@@ -37,6 +38,10 @@ public:
 	TObjectPtr<UCameraComponent> FollowCamera;
 	UPROPERTY(Replicated,BlueprintReadOnly)
 	TObjectPtr<AP2C_WeaponBase> EquippedWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Death Montag")
+	UAnimMontage* DeathMontage;
+
 	
 	// Ability System Component for this character
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
@@ -46,13 +51,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UP2C_InputConfig> InputConfig;
 
+	FTimerHandle DeathTimer;
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 	TObjectPtr<UP2C_InteractionComponent> InteractionComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 	TObjectPtr<UP2C_NetworkComponent> NetworkComp;
-
-	
+	UFUNCTION()
+	void Die(UP2C_AttributionComponent* AttriComp, AActor* InstigatorActor, AActor* DamageActor);
 	/** Handles moving forward/backward */
 	void Input_Move(const FInputActionValue& InputActionValue);
  
@@ -63,15 +69,17 @@ public:
 	void Input_Jump(const FInputActionValue& InputActionValue);
  
 	/** Handles Melee Attack */
-	void Input_AttackMelee(const FInputActionValue& InputActionValue);
+	void Input_Attack(const FInputActionValue& InputActionValue);
 
 	/** Handles Ranged Attack */
-	void Input_AttackRanged(const FInputActionValue& InputActionValue);
+	void Input_AttackRanged(const FInputActionValue& InputActionValue) const;
 
 	void Input_Interaction(const FInputActionValue& InputActionValue);
 
+	
 protected:
-
-	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
+	void  Death_TimeElaps();
+	virtual void BeginPlay() override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 };

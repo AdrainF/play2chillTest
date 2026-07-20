@@ -8,7 +8,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnHealthChanged, UP2C_AttributionComponent*, AttributionComp, float, Health, float, MaxHealth, float, HealthDelta, AActor*, InstigatorActor, AActor*, DamageActor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnStaminaChanged, UP2C_AttributionComponent*, AttributionComp, float, Stamina, float, MaxStamina, float, StaminaDelta);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKillCountChanged, int32, NewKillCount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnDeath,UP2C_AttributionComponent*, AttributionComp, AActor*,InstigatorActor, AActor*, DamageActor);
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PLAY2CHILL_ARENA_API UP2C_AttributionComponent : public UActorComponent
@@ -26,6 +27,8 @@ public:
 	 */
 	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "P2C|Network")
 	void Server_ApplyHealthChange(float Value, AActor* InstigatorActor = nullptr, AActor* DamageActor = nullptr);
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "P2C|Network")
+	void Server_ApplyStaminaChange(float Value);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -40,7 +43,7 @@ protected:
 	UPROPERTY(EditAnywhere, Replicated, Category = "Attributes")
 	float MaxStamina=100.0f;
 	UPROPERTY(EditAnywhere, Replicated, Category = "Attributes")
-	int32 KillCount=0;
+	float StaminaRegenRate=5.0f;
 
 	UPROPERTY(Replicated)
 	AActor* LastInstigator;
@@ -49,8 +52,7 @@ protected:
 	void OnRep_Health(const float OldHealth) ;
 	UFUNCTION()
 	void OnRep_Stamina(const float OldStamina) ;
-	UFUNCTION()
-	void OnRep_KillCount(const int32 OldKillCount) const;
+
 	
 	/** Attribute change functions
 	 * @param Value - The amount to change the attribute by (positive or negative)
@@ -62,6 +64,9 @@ protected:
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	void ApplyStaminaChange(float Value);
+
+	UFUNCTION(Blueprintable, Category="Attributes")
+	void HandleStaminaRegen(float DeltaTime);
 	
 public:
 	// Delegates for attribute changes
@@ -70,7 +75,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnStaminaChanged OnStaminaChanged;
 	UPROPERTY(BlueprintAssignable, Category = "Events")
-	FOnKillCountChanged OnKillCountChanged;
+	FOnDeath OnDeath;
 	// Attribute accessors
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool IsAlive() const { return Health > 0.0f; }
@@ -82,8 +87,6 @@ public:
 	float GetMaxHealth() const { return MaxHealth; }
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetMaxStamina() const {return MaxStamina; }
-	UFUNCTION(BlueprintCallable, Category = "Stats")
-	int32 GetKillCount() const { return KillCount; }
 
 	// Replication
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

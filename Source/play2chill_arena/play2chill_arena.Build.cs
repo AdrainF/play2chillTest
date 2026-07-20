@@ -16,6 +16,7 @@ public class play2chill_arena : ModuleRules
 			"InputCore", 
 			"EnhancedInput",
 			"GameplayTags",
+			"NetCore",
 			
 			//modules for online multiplayer
 			"OnlineSubsystem", 

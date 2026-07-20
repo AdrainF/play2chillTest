@@ -18,15 +18,6 @@ UP2C_InteractionComponent::UP2C_InteractionComponent()
 	SetIsReplicatedByDefault(true);
 }
 
-
-// Called when the game starts
-void UP2C_InteractionComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-}
-
 void UP2C_InteractionComponent::Server_Interact_Implementation()
 {
 	PrimaryInteract();
@@ -54,6 +45,7 @@ void UP2C_InteractionComponent::PrimaryInteract()
 	TArray<struct FHitResult> OutHits;
 	FCollisionObjectQueryParams ObjectQueryParams;
 	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_GameTraceChannel2);
 	FCollisionShape CollisionShape;
 	float Radius = SphereRadius;
 	CollisionShape.SetSphere(Radius);
@@ -86,12 +78,3 @@ void UP2C_InteractionComponent::PrimaryInteract()
 	DrawDebugLine(GetWorld(), Start, End, LineColor, false, 2.0f, 0, 2.0f);
 }
 
-
-// Called every frame
-void UP2C_InteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                              FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}

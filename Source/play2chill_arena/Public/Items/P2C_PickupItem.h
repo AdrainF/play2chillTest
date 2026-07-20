@@ -20,19 +20,12 @@ class PLAY2CHILL_ARENA_API AP2C_PickupItem : public AActor, public IP2C_Interact
 public:	
 	// Sets default values for this actor's properties
 	AP2C_PickupItem();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
-	TObjectPtr<USphereComponent> CollisionComp;
-protected:
+	
 	// The data asset that defines the properties and behavior of this pickup item
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	UP2C_ItemDataAssetBase* ItemDataAsset;
 	
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	TObjectPtr<USphereComponent> CollisionComp;
+	
 };

@@ -20,8 +20,9 @@ void UP2C_RangedAttack::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 			UE_LOG(LogTemp, Warning, TEXT("SpawnProjectile: Missing weapon on client/server!"));
 			return;
 		}
+		// The projectile spawns at the weapon muzzle but aims at what the camera is looking 
 		FVector WeaponLocation = Character->EquippedWeapon->WeaponMesh->GetSocketLocation(SpawnSocketName);
-
+		// Trace from camera to find the world impact point for accurate aiming.
 		FHitResult Hit;
 		FVector TraceStart;
 		FVector TraceEnd;
@@ -51,14 +52,17 @@ void UP2C_RangedAttack::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 
 		if (GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjParams, Shape, Params))
 		{
+			// Adjust rotation to point from the muzzle to the actual crosshair impact point.
 			ProjRotation = FRotationMatrix::MakeFromX(Hit.ImpactPoint - WeaponLocation).Rotator();
 		}
 		else
 		{
+			// Fallback to aiming towards the end of the trace range.
 			ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - WeaponLocation).Rotator();
 		}
-	
+		
 		FTransform SpawnTM = FTransform(ProjRotation, WeaponLocation);
+		// Delegate the actual spawning to the network component for server authority.
 		Character->NetworkComp->Request_SpawnProjectile(ClassToSpawn, WeaponLocation, ProjRotation);
 		
 	}
@@ -70,7 +74,7 @@ void UP2C_RangedAttack::PerformRangedAttack()
 	AP2C_PlayerCharacter* P2CCharacter = GetP2CCharacter();
 
 	if (P2CCharacter && MontageToPlay)
-	{
+	{	// Sync animation playback across the network.
 		P2CCharacter->NetworkComp->Server_PlayAttack(MontageToPlay);
 		
 		float Duration = P2CCharacter->PlayAnimMontage(MontageToPlay);
@@ -79,6 +83,7 @@ void UP2C_RangedAttack::PerformRangedAttack()
 			UAnimInstance* AnimInstance = P2CCharacter->GetMesh()->GetAnimInstance();
 			if (AnimInstance)
 			{
+				// Bind delegates to ensure the ability finishes correctly.
 				FOnMontageEnded MontageEndedDelegate;
 				MontageEndedDelegate.BindUObject(this, &UP2C_RangedAttack::OnAttackMontageEnded);
 				AnimInstance->Montage_SetEndDelegate(MontageEndedDelegate, MontageToPlay);
@@ -87,8 +92,8 @@ void UP2C_RangedAttack::PerformRangedAttack()
 				BlendDelegate.BindUObject(this, &UP2C_RangedAttack::OnAttackMontageEnded);
 				AnimInstance->Montage_SetBlendingOutDelegate(BlendDelegate, MontageToPlay);
 
-				
-				P2CCharacter->GetWorldTimerManager().SetTimer(AttackTimer,this, &UP2C_RangedAttack::PrimayAtttack_TimeElapsed,  DelayTime);
+				// Start the timer for the delayed projectile launch.
+				P2CCharacter->GetWorldTimerManager().SetTimer(AttackTimer,this, &UP2C_RangedAttack::PrimaryAttack_TimeElapsed,  DelayTime);
 			}
 		}
 		else
@@ -111,7 +116,7 @@ void UP2C_RangedAttack::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterr
 	FinishAbility();
 }
 
-void UP2C_RangedAttack::PrimayAtttack_TimeElapsed()
+void UP2C_RangedAttack::PrimaryAttack_TimeElapsed()
 {
 	SpawnProjectile(ProjectileClass);
 }

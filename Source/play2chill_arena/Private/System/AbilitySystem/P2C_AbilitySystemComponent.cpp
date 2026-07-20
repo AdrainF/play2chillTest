@@ -3,6 +3,7 @@
 
 #include "System/AbilitySystem/P2C_AbilitySystemComponent.h"
 
+#include "Components/P2C_AttributionComponent.h"
 #include "System/AbilitySystem/Abilities/P2C_AbilityBase.h"
 #include "System/AbilitySystem/Abilities/Data/P2C_AbilityDataAsset.h"
 
@@ -19,7 +20,15 @@ UP2C_AbilitySystemComponent::UP2C_AbilitySystemComponent()
 bool UP2C_AbilitySystemComponent::CanActivateAbility(const UP2C_AbilityDataAsset* DA) const
 {
 	if (!DA) return false;
+	UP2C_AttributionComponent * AttrComp = Cast<UP2C_AttributionComponent>(
+		GetOwner()->GetComponentByClass(UP2C_AttributionComponent::StaticClass()));
 	// Check if the ability is granted
+	if (FMath::Abs(DA->StaminaCost)>AttrComp->GetStamina())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Not enough stamina"), *DA->AbilityTag.ToString());
+		return false;
+	}
+	
 	if (ActiveTags.HasAny(DA->AbilityBlockTags))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Ability with tag %s is blocked"), *DA->AbilityTag.ToString());
@@ -31,6 +40,7 @@ bool UP2C_AbilitySystemComponent::CanActivateAbility(const UP2C_AbilityDataAsset
 void UP2C_AbilitySystemComponent::GrantAbility(UP2C_AbilityDataAsset* DA)
 {
 	if (!DA) return;
+
 	// Check if the ability is already granted
 
 	for (auto& RepAbilityTag : ReplicatedAbilities)
@@ -43,6 +53,18 @@ void UP2C_AbilitySystemComponent::GrantAbility(UP2C_AbilityDataAsset* DA)
 
 	FAbilitySlot AbilityToAdd = FAbilitySlot(DA->AbilityTag, DA);
 	ReplicatedAbilities.Add(AbilityToAdd);
+}
+
+void UP2C_AbilitySystemComponent::RevokeAbility(UP2C_AbilityDataAsset* DA)
+{
+	if (!DA) return;
+
+	for (int32 Index = 0; Index <= ReplicatedAbilities.Num(); Index++)
+		if (ReplicatedAbilities[Index].Tag == DA->AbilityTag)
+		{
+			ReplicatedAbilities.RemoveAt(Index);
+		}
+	
 }
 
 void UP2C_AbilitySystemComponent::ActivateAbility(const FGameplayTag AbilityTag)
@@ -63,13 +85,20 @@ void UP2C_AbilitySystemComponent::ActivateAbility(const FGameplayTag AbilityTag)
 		return;
 	}
 
-
+	if (!CanActivateAbility(FoundDA)) { return; }
 	// Create an instance of the ability class
 	UP2C_AbilityBase* AbilityToRun = NewObject<UP2C_AbilityBase>(this, FoundDA->AbilityClass);
 	if (AbilityToRun)
 	{
+		UP2C_AttributionComponent * AttrComp = Cast<UP2C_AttributionComponent>(
+		GetOwner()->GetComponentByClass(UP2C_AttributionComponent::StaticClass()));
+		
+			AttrComp->Server_ApplyStaminaChange(FoundDA->StaminaCost);
+	
+		
 		RunningAbilities.Add(AbilityToRun);
 		AbilityToRun->Internal_StartAbility(this, FoundDA);
+		UE_LOG(LogTemp, Warning, TEXT("Run ability: %s"), *AbilityToRun->GetName());
 	}
 }
 
@@ -98,6 +127,20 @@ void UP2C_AbilitySystemComponent::RequestGrantAbility(UP2C_AbilityDataAsset* DA)
 	}
 }
 
+void UP2C_AbilitySystemComponent::RequestRevokeAbility(UP2C_AbilityDataAsset* DA)
+{
+	if (!DA) return;
+	if (!GetOwner()->HasAuthority())
+	{
+		Server_RevokeAbility(DA);
+	}
+	else
+	{
+		RequestRevokeAbility(DA);
+	}
+}
+
+
 void UP2C_AbilitySystemComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -114,6 +157,20 @@ void UP2C_AbilitySystemComponent::NotifyAbilityFinished(UP2C_AbilityBase* Abilit
 		RunningAbilities.Remove(Ability);
 	}
 }
+
+void UP2C_AbilitySystemComponent::Server_RevokeAbility_Implementation(UP2C_AbilityDataAsset* DA)
+{
+	if (DA)
+	{
+		RevokeAbility(DA);
+	}
+}
+
+bool UP2C_AbilitySystemComponent::Server_RevokeAbility_Validate(UP2C_AbilityDataAsset* DA)
+{
+	return true;
+}
+
 
 void UP2C_AbilitySystemComponent::Server_GrantAbility_Implementation(UP2C_AbilityDataAsset* DA)
 {

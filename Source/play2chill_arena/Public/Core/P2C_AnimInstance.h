@@ -26,4 +26,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Movement")
 	float Direction;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Death")
+	bool bIsAlive=true;
 };

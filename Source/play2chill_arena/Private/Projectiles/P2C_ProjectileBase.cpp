@@ -3,6 +3,7 @@
 
 #include "Projectiles/P2C_ProjectileBase.h"
 
+#include "Characters/P2C_PlayerCharacter.h"
 #include "Components/P2C_AttributionComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -40,7 +41,9 @@ AP2C_ProjectileBase::AP2C_ProjectileBase()
 void AP2C_ProjectileBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	
 	if (!HasAuthority()) return;
+	// Filter out the shooter and check for valid hit targets.
 	if (OtherActor && OtherActor!= GetInstigator())
 	{
 		UP2C_AttributionComponent* AttributeComp=Cast<UP2C_AttributionComponent>(OtherActor->GetComponentByClass(UP2C_AttributionComponent::StaticClass()));
@@ -67,11 +70,12 @@ void AP2C_ProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* 
 void AP2C_ProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	// Bind collision events only on the server to maintain authority over damage.
 	if (HasAuthority())
 	{
 		CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &AP2C_ProjectileBase::OnBeginOverlap);
 		CollisionComponent->OnComponentHit.AddDynamic(this, &AP2C_ProjectileBase::OnActorHit);
+		
 	}
 }
 
@@ -90,7 +94,7 @@ void AP2C_ProjectileBase::ProcessHit(AActor* OtherActor)
 		UP2C_AttributionComponent* AttributeComp = Cast<UP2C_AttributionComponent>(OtherActor->GetComponentByClass(UP2C_AttributionComponent::StaticClass()));
 		if (AttributeComp)
 		{
-			AttributeComp->Server_ApplyHealthChange(-10.0f, GetInstigator(), OtherActor);
+			AttributeComp->Server_ApplyHealthChange(-ProjectileDamage, GetInstigator(), OtherActor);
 		}
 	}
 	
@@ -102,7 +106,6 @@ void AP2C_ProjectileBase::Explode_Implementation()
 	if (ensure(IsValid(this)))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
-		UGameplayStatics::PlaySoundAtLocation(this, ExplodeSound, GetActorLocation(), GetActorRotation());
 		Destroy();
 
 	}

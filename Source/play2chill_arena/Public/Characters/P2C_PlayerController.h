@@ -20,9 +20,20 @@ public:
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UUserWidget> HUDClass;
 
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UUserWidget> RestartWidgetClass;
+
+	UFUNCTION(Client, Reliable)
+	void Client_SetGameInputMode();
+
+	UFUNCTION(Client, Reliable)
+	void Client_ShowEndRoundWidget();
+	
+	virtual void OnPossess(APawn* InPawn) override;
 protected:
 	virtual void BeginPlay() override;
-
+	
+	virtual void AcknowledgePossession(APawn* P) override;
 private:
 	// Reference to the player's HUD widget
 	UPROPERTY()

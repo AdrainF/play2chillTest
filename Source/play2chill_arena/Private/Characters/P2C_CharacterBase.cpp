@@ -57,6 +57,7 @@ void AP2C_CharacterBase::BeginPlay()
 		{
 			AttrComp->OnHealthChanged.AddDynamic(this, &AP2C_CharacterBase::UpdateOverheadHealth);
 		}
+		
 		// Initialize the overhead health widget with the current health values
 		UpdateOverheadHealth(AttrComp, AttrComp->GetHealth(), AttrComp->GetMaxHealth(), AttrComp->GetHealth(), nullptr, this);
 	}

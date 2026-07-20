@@ -38,6 +38,8 @@ public:
 	// Grants an ability to the component based on its tag and data asset
 	UFUNCTION(BlueprintCallable, Category = "P2C|Abilities")
 	void GrantAbility(UP2C_AbilityDataAsset* DA);
+	UFUNCTION(BlueprintCallable, Category = "P2C|Abilities")
+	void RevokeAbility(UP2C_AbilityDataAsset* DA);
 	// Activates an ability based on its tag
 	UFUNCTION(BlueprintCallable, Category = "P2C|Abilities")
 	void ActivateAbility(const FGameplayTag AbilityTag);
@@ -52,6 +54,9 @@ public:
 	void RequestActivateAbility(FGameplayTag AbilityTag);
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void RequestGrantAbility(UP2C_AbilityDataAsset* DA);
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	void RequestRevokeAbility(UP2C_AbilityDataAsset* DA);
+
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
@@ -70,6 +75,9 @@ protected:
  
 	UFUNCTION(Server, Reliable, WithValidation)
 	void Server_GrantAbility(UP2C_AbilityDataAsset* DA);
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_RevokeAbility(UP2C_AbilityDataAsset* DA);
 	
 	UPROPERTY(Replicated)
 	TArray<UP2C_AbilityBase*> RunningAbilities;
