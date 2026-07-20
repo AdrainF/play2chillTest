@@ -20,7 +20,7 @@ class PLAY2CHILL_ARENA_API AP2C_ArenaGameState : public AGameStateBase
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Restart")
 	FOnRestartUpdated OnRestartUpdated;
-
+	// Return players restart statuses
 	UFUNCTION(BlueprintCallable, Category = "Restart")
 	void GetRestartCounts(int32& OutRestartCount, int32& OutTotalCount);
  

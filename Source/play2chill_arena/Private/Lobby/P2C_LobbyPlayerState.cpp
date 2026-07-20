@@ -11,8 +11,9 @@ AP2C_LobbyPlayerState::AP2C_LobbyPlayerState()
 	bIsReady = false;
 }
 
-void AP2C_LobbyPlayerState::OnRep_IsReady()
+void AP2C_LobbyPlayerState::OnRep_IsReady() const
 {
+	// Updates the lobby UI on clients when the ready state is replicated.
 	if (AP2C_LobbyGameState* GS = GetWorld()->GetGameState<AP2C_LobbyGameState>())
 	{
 		GS->OnLobbyUpdated.Broadcast();
@@ -22,12 +23,13 @@ void AP2C_LobbyPlayerState::OnRep_IsReady()
 void AP2C_LobbyPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
+	// Registers the bIsReady variable for network replication.
 	DOREPLIFETIME(AP2C_LobbyPlayerState, bIsReady);
 }
 
 void AP2C_LobbyPlayerState::Server_SetReady_Implementation(bool bNewReady)
 {
+	// Updates the ready state on the server and notifies the lobby UI.
 	bIsReady = bNewReady;
 	if (AP2C_LobbyGameState* GS = GetWorld()->GetGameState<AP2C_LobbyGameState>())
 	{

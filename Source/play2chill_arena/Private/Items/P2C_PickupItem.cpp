@@ -18,8 +18,6 @@ void AP2C_PickupItem::Interact_Implementation(AActor* Interactor)
 		}
 	}
 }
-
-// Sets default values
 AP2C_PickupItem::AP2C_PickupItem()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -29,20 +27,5 @@ AP2C_PickupItem::AP2C_PickupItem()
 
 	CollisionComp=CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComp"));
 	RootComponent=CollisionComp;
-
-}
-
-// Called when the game starts or when spawned
-void AP2C_PickupItem::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void AP2C_PickupItem::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 

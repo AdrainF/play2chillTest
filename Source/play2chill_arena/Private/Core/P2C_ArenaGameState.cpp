@@ -7,6 +7,7 @@
 
 void AP2C_ArenaGameState::GetRestartCounts(int32& OutRestartCount, int32& OutTotalCount)
 {
+	// Aggregates player restart statuses for UI display.
 	OutRestartCount = 0;
 	OutTotalCount = PlayerArray.Num();
  
@@ -22,11 +23,13 @@ void AP2C_ArenaGameState::GetRestartCounts(int32& OutRestartCount, int32& OutTot
 void AP2C_ArenaGameState::AddPlayerState(APlayerState* PlayerState)
 {
 	Super::AddPlayerState(PlayerState);
+	// Ensures UI updates when a new player joins.
 	OnRestartUpdated.Broadcast();
 }
 
 void AP2C_ArenaGameState::RemovePlayerState(APlayerState* PlayerState)
 {
 	Super::RemovePlayerState(PlayerState);
+	// Ensures UI updates when a player leaves.
 	OnRestartUpdated.Broadcast();
 }

@@ -9,6 +9,10 @@
 class UProjectileMovementComponent;
 class USphereComponent;
 class UParticleSystemComponent;
+
+/**
+* Base class for projectiles that handle collision, damage application, and impact effects.
+*/
 UCLASS()
 class PLAY2CHILL_ARENA_API AP2C_ProjectileBase : public AActor
 {
@@ -17,21 +21,18 @@ class PLAY2CHILL_ARENA_API AP2C_ProjectileBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AP2C_ProjectileBase();
-	
+	/** Collision sphere and movement logic components. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	TObjectPtr<USphereComponent> CollisionComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
-
+	/** Visual feedback components/assets. */
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* EffectComp;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* ImpactVFX;
-	UPROPERTY(EditAnywhere, Category = "Audio")
-	UAudioComponent* FlySound;
-	UPROPERTY(EditAnywhere, Category = "Audio")
-	USoundBase* ExplodeSound;
 	
+	/** Projectile gameplay balance parameters. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float ProjectileSpeed=1000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")

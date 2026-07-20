@@ -17,10 +17,11 @@ class PLAY2CHILL_ARENA_API AP2C_ArenaGameMode : public AGameModeBase
 	
 public:
 	AP2C_ArenaGameMode();
+	/** Notifies the game mode that a kill has occurred to update scores and check win conditions. */
 	void NotifyKill(AController* Killer, AController* Victim);
-	
+	/** Overridden to determine the spawn point for a player. */
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
-
+	/** Initiates the respawn process for a player controller after a delay. */
 	void RequestRespawn(AController* Controller);
 protected:
 
@@ -28,13 +29,18 @@ protected:
  
 	UPROPERTY(EditAnywhere, Category = "Rules")
 	float RespawnDelay = 3.0f;
-
+	/** Number of kills required for a player to win the match. */
+	UPROPERTY(EditDefaultsOnly, Category = "Rules")
+	int KillsToWin = 5;
+	/** Checks if all connected players have flagged themselves as ready to restart. */
 	void CheckAllPlayersRestart();
-	
+	/** Performs a Server Travel to reload the arena level. */
 	void RestartArenaLevel();
+	/** Called when a player reaches the kill limit. Disables gameplay and shows UI. */
 	void EndMatchWithWinner(AP2C_ArenaPlayerState* Winner);
+	/** Cached list of player start actors found in the level. */
 	UPROPERTY()
 	TArray<AActor*> AvailableStarts;
 
-	void Tick(float DeltaSeconds) override;
+	virtual void Tick(float DeltaSeconds) override;
 };

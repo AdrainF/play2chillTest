@@ -6,12 +6,12 @@
 #include "Core/P2C_ArenaGameState.h"
 #include "Net/UnrealNetwork.h"
 
-void AP2C_ArenaPlayerState::OnRep_KillCount()
+void AP2C_ArenaPlayerState::OnRep_KillCount() const
 {
 	OnKillCountChanged.Broadcast(KillCount);
 }
 
-void AP2C_ArenaPlayerState::OnRep_WantsRestart()
+void AP2C_ArenaPlayerState::OnRep_WantsRestart() const
 {
 	if (AP2C_ArenaGameState* GS = GetWorld()->GetGameState<AP2C_ArenaGameState>())
 	{

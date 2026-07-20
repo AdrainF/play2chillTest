@@ -88,7 +88,6 @@ void UP2C_ArenaGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
 				UE_LOG(LogTemp, Warning, TEXT("Host: Found my own session. Ignoring."));
 				return;
 			}
- 
 			
 			UE_LOG(LogTemp, Log, TEXT("Client: Destroying old session state before joining..."));
             
@@ -97,7 +96,6 @@ void UP2C_ArenaGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
  
 			DestroySessionAndJoinHandle = SessionInterface->OnDestroySessionCompleteDelegates.AddLambda([this](FName SessionName, bool bDestroySuccess)
 			{
-				
 				SessionInterface->OnDestroySessionCompleteDelegates.Remove(DestroySessionAndJoinHandle);
                 
 				if (bDestroySuccess && SessionSearch->SearchResults.Num() > 0)
@@ -109,7 +107,6 @@ void UP2C_ArenaGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
 			SessionInterface->DestroySession(MySessionName);
 			return;
 		}
- 
 		
 		SessionInterface->JoinSession(0, MySessionName, SessionSearch->SearchResults[0]);
 	}

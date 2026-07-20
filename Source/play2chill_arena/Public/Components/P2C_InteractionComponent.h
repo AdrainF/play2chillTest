@@ -22,8 +22,7 @@ protected:
 	float SphereRadius=30.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	float InteractionDistance=500.0f;
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	
 
 public:
 	UFUNCTION(Server, Reliable, WithValidation)
@@ -33,8 +32,4 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Interaction")
 	void PrimaryInteract();
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
 };

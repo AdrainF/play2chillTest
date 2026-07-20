@@ -19,11 +19,9 @@ class PLAY2CHILL_ARENA_API AP2C_LobbyGameState : public AGameStateBase
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Lobby")
 	FOnLobbyUpdated OnLobbyUpdated;
- 
 	
 	UFUNCTION(BlueprintCallable, Category = "Lobby")
 	void GetLobbyCounts(int32& OutReadyCount, int32& OutTotalCount);
- 
 	
 	virtual void AddPlayerState(APlayerState* PlayerState) override;
     virtual void RemovePlayerState(APlayerState* PlayerState) override;

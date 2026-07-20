@@ -21,8 +21,7 @@ void FP2C_GameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 	AddTag(InputTag_Move, "InputTag.Move", "Move input");
 	AddTag(InputTag_Look, "InputTag.Look", "Look input");
 	AddTag(InputTag_Jump, "InputTag.Jump", "Jump input");
-	AddTag(InputTag_Attack_Melee, "InputTag.Attack.Melee", "Attack input");
-	AddTag(InputTag_Attack_Ranged, "InputTag.Attack.Ranged", "Ranged attack input");
+	AddTag(InputTag_Attack, "InputTag.Attack", "Attack input");
 	AddTag(InputTag_Interact, "InputTag.Interact", "Interaction input");
 }
 

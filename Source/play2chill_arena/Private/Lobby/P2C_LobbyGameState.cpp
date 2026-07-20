@@ -10,6 +10,7 @@ class AP2C_LobbyPlayerState;
 
 void AP2C_LobbyGameState::GetLobbyCounts(int32& OutReadyCount, int32& OutTotalCount)
 {
+	// Aggregates player readiness status for the lobby UI.
 	OutReadyCount = 0;
 	OutTotalCount = PlayerArray.Num();
  

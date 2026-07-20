@@ -17,6 +17,7 @@ public:
 	UP2C_NetworkComponent();
 
 protected:
+	UPROPERTY()
 	AP2C_PlayerCharacter* P2C_PlayerCharacter;
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -37,7 +38,5 @@ public:
 	UFUNCTION(Server, Reliable)
 	void Server_RequestRespawn();
 	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	AController* GetController();
 };

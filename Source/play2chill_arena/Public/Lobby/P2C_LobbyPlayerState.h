@@ -23,7 +23,7 @@ public:
  
 	// Called when the variable replicates to clients
 	UFUNCTION()
-	void OnRep_IsReady();
+	void OnRep_IsReady() const;
  
 	// RPC called by the client to update readiness on the server
 	UFUNCTION(Server, Reliable, BlueprintCallable, Category = "Lobby")

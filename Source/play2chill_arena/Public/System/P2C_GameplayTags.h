@@ -19,8 +19,7 @@ struct FP2C_GameplayTags
 	FGameplayTag InputTag_Move;
 	FGameplayTag InputTag_Look;
 	FGameplayTag InputTag_Jump;
-	FGameplayTag InputTag_Attack_Melee;
-	FGameplayTag InputTag_Attack_Ranged;
+	FGameplayTag InputTag_Attack;
 	FGameplayTag InputTag_Interact;
 
 protected:

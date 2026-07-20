@@ -11,6 +11,7 @@
 
 AActor* AP2C_ArenaGameMode::ChoosePlayerStart_Implementation(AController* Player)
 {
+	// Cache player starts if they haven't been gathered yet.
 	if (AvailableStarts.Num() == 0)
 	{
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), AvailableStarts);
@@ -18,6 +19,7 @@ AActor* AP2C_ArenaGameMode::ChoosePlayerStart_Implementation(AController* Player
 
 	if (GameState)
 	{
+		// Simple logic to assign a spawn point based on the player's index in the GameState.
 		int32 PlayerIndex = GameState->PlayerArray.Find(Player->PlayerState);
         
 		
@@ -26,6 +28,7 @@ AActor* AP2C_ArenaGameMode::ChoosePlayerStart_Implementation(AController* Player
 			return AvailableStarts[PlayerIndex];
 		}
 	}
+	// Fallback to default engine logic if specific start isn't found.
 	return Super::ChoosePlayerStart_Implementation(Player);
 }
 
@@ -39,7 +42,7 @@ void AP2C_ArenaGameMode::RequestRespawn(AController* Controller)
 		// Set a timer for the respawn
 		FTimerHandle RespawnTimerHandle;
 		FTimerDelegate RespawnDelegate;
-
+		// Use TWeakObjectPtr to safely pass the controller to the timer, preventing crashes if player leaves.
 		TWeakObjectPtr<AController> SafeControllerPtr(Controller);
 		// Use a delegate to pass the Controller parameter to the timer
 		RespawnDelegate.BindUObject(this, &AP2C_ArenaGameMode::RespawnPlayer, SafeControllerPtr);
@@ -53,9 +56,7 @@ void AP2C_ArenaGameMode::RespawnPlayer(TWeakObjectPtr<AController> ControllerPtr
 	AController* Controller = ControllerPtr.Get();
 	if (Controller)
 	{
-		
 		RestartPlayer(Controller);
-        
 		UE_LOG(LogTemp, Log, TEXT("Player %s respowned."), *Controller->GetName());
 	}
 }
@@ -72,14 +73,13 @@ AP2C_ArenaGameMode::AP2C_ArenaGameMode()
 void AP2C_ArenaGameMode::NotifyKill(AController* Killer, AController* Victim)
 {
 	if (!Killer || !Victim) return;
- 
+	
 	AP2C_ArenaPlayerState* KillerState = Killer->GetPlayerState<AP2C_ArenaPlayerState>();
 	if (KillerState)
 	{
 		KillerState->AddKill();
- 
-		
-		if (KillerState->KillCount >= 2)
+		// Check if this kill results in a match win.
+		if (KillerState->KillCount >= KillsToWin)
 		{
 			EndMatchWithWinner(KillerState);
 		}
@@ -110,7 +110,7 @@ void  AP2C_ArenaGameMode::CheckAllPlayersRestart()
 void AP2C_ArenaGameMode::RestartArenaLevel()
 {
 	SetActorTickEnabled(false);
-    
+	// Use Seamless Travel to ensure clients stay connected during level transition.
 	bUseSeamlessTravel = true;
 	GetWorld()->ServerTravel(TEXT("/Game/Levels/ArenaMap?listen"));
 }
@@ -118,6 +118,7 @@ void AP2C_ArenaGameMode::RestartArenaLevel()
 void AP2C_ArenaGameMode::EndMatchWithWinner(AP2C_ArenaPlayerState* Winner)
 {
 	SetActorTickEnabled(true);
+	// Notify all connected clients to show the End Round UI.
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
 		APlayerController* PC = It->Get();
