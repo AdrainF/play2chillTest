@@ -42,6 +42,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Death Montag")
 	UAnimMontage* DeathMontage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputMappingContext* DefaultMappingContext;
+	
 	
 	// Ability System Component for this character
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")

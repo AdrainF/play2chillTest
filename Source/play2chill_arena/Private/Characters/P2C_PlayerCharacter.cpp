@@ -3,6 +3,7 @@
 
 #include "Characters/P2C_PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Characters/P2C_PlayerController.h"
 #include "Components/P2C_AttributionComponent.h"
 #include "Components/P2C_InteractionComponent.h"
 #include "Components/P2C_NetworkComponent.h"
@@ -11,6 +12,7 @@
 #include "Input/P2C_EnhancedInputComponent.h"
 #include "System/P2C_GameplayTags.h"
 #include "System/AbilitySystem/P2C_AbilitySystemComponent.h"
+#include "EnhancedInputSubsystems.h"
 
 AP2C_PlayerCharacter::AP2C_PlayerCharacter()
 {
@@ -77,7 +79,11 @@ void AP2C_PlayerCharacter::Input_Jump(const FInputActionValue& InputActionValue)
 
 void AP2C_PlayerCharacter::Input_Attack(const FInputActionValue& InputActionValue)
 {
+	FGameplayTag AttackTag= FGameplayTag::RequestGameplayTag(FName("Ability.Attack"));
+	
+	AbilitySystemComp->ActivateAbility(AttackTag);
 }
+	
 
 void AP2C_PlayerCharacter::Input_Interaction(const FInputActionValue& InputActionValue)
 {
@@ -96,6 +102,19 @@ void AP2C_PlayerCharacter::BeginPlay()
 	if (!AttrComp->OnDeath.IsAlreadyBound(this, &AP2C_PlayerCharacter::Die))
 	{
 		AttrComp->OnDeath.AddDynamic(this, &AP2C_PlayerCharacter::Die);
+	}
+
+	AP2C_PlayerController* MyController= Cast<AP2C_PlayerController>(GetController());
+
+	if (MyController && IsLocallyControlled())
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(MyController->GetLocalPlayer()))
+		{
+			if (DefaultMappingContext)
+			{
+				Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			}
+		}
 	}
 }
 

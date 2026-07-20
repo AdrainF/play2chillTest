@@ -31,9 +31,15 @@ public:
 	void Request_ClearHitActors();
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ClearHitActors();
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void SetTraceWeapon(bool isTracing);
 	
+	UFUNCTION()
+	void WeaponTrace();
 	UPROPERTY()
 	TSet<AActor*> HitActors;
-	
+	protected:
+	UPROPERTY()
+	bool bTraceWeapon=false;
 	virtual void Tick(float DeltaTime) override;
 };
